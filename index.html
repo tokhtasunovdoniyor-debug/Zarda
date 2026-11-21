@@ -1,36 +1,94 @@
 <!doctype html>
 <html lang="ru">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Zarda.shop — современная одежда с доставкой по Узбекистану"><title>ZARDA — Modern essentials</title>
-<style>
-:root{--ink:#171717;--muted:#777;--line:#e8e6e2;--paper:#fff;--soft:#f5f4f1}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.5 Arial,Helvetica,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}.top{background:#171717;color:#fff;text-align:center;padding:9px;font-size:10px;letter-spacing:1.5px}.wrap{max-width:1440px;margin:auto;padding:0 5vw}.nav{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}.logo{font-size:29px;font-weight:800;letter-spacing:3px;text-decoration:none;color:inherit}.navlinks{display:flex;gap:28px;text-transform:uppercase;font-size:11px;letter-spacing:1.2px}.navlinks a{color:inherit;text-decoration:none}.cartbtn{border:1px solid var(--ink);background:white;padding:10px 15px;font-size:11px;letter-spacing:1px}.hero{display:grid;grid-template-columns:1fr 1fr;min-height:550px;background:#eeece7}.hero-copy{padding:10%;display:flex;flex-direction:column;justify-content:center;align-items:flex-start}.eyebrow{font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}.hero h1{font-size:clamp(42px,6vw,82px);line-height:.98;letter-spacing:-4px;font-weight:500;margin:22px 0}.hero p{max-width:330px;color:#555}.btn{background:#171717;color:white;border:1px solid #171717;padding:14px 22px;text-transform:uppercase;letter-spacing:1.2px;font-size:10px}.hero-img{width:100%;height:100%;min-height:550px;object-fit:cover}.section{padding:70px 0}.sectionhead{display:flex;align-items:end;justify-content:space-between;margin-bottom:25px}.section h2{font-size:32px;font-weight:500;letter-spacing:-1px;margin:8px 0}.filters{display:flex;gap:8px;flex-wrap:wrap;margin:25px 0}.filter{border:1px solid var(--line);background:white;padding:9px 15px;font-size:11px}.filter.active{background:#171717;color:#fff;border-color:#171717}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}.product-img{width:100%;aspect-ratio:3/4;object-fit:cover;background:var(--soft);display:block}.product h3{font-size:13px;font-weight:500;margin:12px 0 3px}.price{font-weight:600;font-size:13px}.muted{color:var(--muted);font-size:11px}.add{width:100%;margin-top:12px;padding:11px;background:white;border:1px solid var(--ink);font-size:10px;letter-spacing:1px}.add:hover{background:#171717;color:#fff}.about{background:var(--soft);padding:55px 7%;text-align:center}.about h2{font-weight:400;font-size:30px}.footer{background:#171717;color:white;padding:45px 0;margin-top:60px}.footerrow{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}.footer p{color:#aaa;font-size:11px}.modal{display:none;position:fixed;inset:0;background:#0008;z-index:5;align-items:center;justify-content:center;padding:16px}.modal.show{display:flex}.panel{background:#fff;width:min(560px,100%);max-height:90vh;overflow:auto;padding:28px}.panelhead{display:flex;justify-content:space-between;align-items:center}.close{border:0;background:none;font-size:25px}.field{display:grid;gap:6px;margin:13px 0}.field label{font-size:11px;color:#555}.field input,.field textarea{border:1px solid #ddd;padding:12px;width:100%;background:#fff}.cartline{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line)}.qty button{border:1px solid #ddd;background:#fff;padding:3px 9px}.total{display:flex;justify-content:space-between;font-size:17px;font-weight:bold;padding:18px 0}.notice{font-size:12px;color:#555;background:var(--soft);padding:12px;margin:12px 0}.empty{text-align:center;padding:30px;color:#777}.hidden{display:none!important}
-@media(max-width:800px){.navlinks{display:none}.hero{grid-template-columns:1fr}.hero-img{min-height:360px;max-height:440px;grid-row:1}.hero-copy{padding:40px 8%}.grid{grid-template-columns:repeat(2,1fr);gap:14px}.section{padding:45px 0}.hero h1{letter-spacing:-2px}.wrap{padding:0 18px}}
-</style></head>
-<body><div class="top">НОВАЯ КОЛЛЕКЦИЯ · ДОСТАВКА ПО УЗБЕКИСТАНУ</div>
-<header class="wrap nav"><a class="logo" href="#">ZARDA.</a><nav class="navlinks"><a href="#catalog">Каталог</a><a href="#about">О бренде</a><a href="#contacts">Контакты</a></nav><button class="cartbtn" onclick="openCart()">КОРЗИНА (<span id="count">0</span>)</button></header>
-<main><section class="wrap hero"><div class="hero-copy"><div class="eyebrow">ZARDA / COLLECTION 2026</div><h1>STYLE IS<br>SIMPLICITY.</h1><p>Современная одежда на каждый день. Чистые силуэты, спокойные оттенки и внимание к деталям.</p><a class="btn" href="#catalog" style="text-decoration:none">СМОТРЕТЬ КОЛЛЕКЦИЮ</a></div><img class="hero-img" src="https://images.unsplash.com/photo-1539109149349-49f4d6f2c7a9?auto=format&fit=crop&w=1200&q=85" alt="Fashion editorial"></section>
-<section class="wrap section" id="catalog"><div class="sectionhead"><div><div class="eyebrow">CURATED FOR YOU</div><h2>Избранное</h2></div><div class="muted">ЦЕНЫ В UZS</div></div><div class="filters" id="filters"></div><div class="grid" id="products"></div></section>
-<section class="wrap about" id="about"><div class="eyebrow">LESS, BUT BETTER</div><h2>Одежда, которая говорит за тебя.</h2><p class="muted">ZARDA — минималистичный взгляд на повседневный стиль.</p></section></main>
-<footer class="footer" id="contacts"><div class="wrap footerrow"><div><a class="logo" href="#" style="color:white">ZARDA.</a><p>Your style. Your choice.</p></div><div><b>ПОМОЩЬ</b><p>Доставка · Оплата · Возврат</p><p>Оплата переводом на карту</p></div><div><b>СВЯЗЬ</b><p>Telegram: @Zarda_shop_bot</p><p>Instagram: @zarda.shop_uz</p></div></div></footer>
-<div class="modal" id="cartModal" onclick="if(event.target===this)closeCart()"><div class="panel"><div class="panelhead"><h2>Корзина</h2><button class="close" onclick="closeCart()">×</button></div><div id="cartItems"></div><div class="total"><span>Итого</span><span id="total">0 UZS</span></div><button class="btn" style="width:100%" onclick="showCheckout()">ОФОРМИТЬ ЗАКАЗ</button><div class="notice">Оплата производится переводом на карту после подтверждения заказа менеджером.</div><div id="checkout" class="hidden"><h3>Данные покупателя</h3><form id="orderForm"><div class="field"><label>Имя и фамилия</label><input name="name" required placeholder="Ваше имя"></div><div class="field"><label>Телефон</label><input name="phone" required placeholder="+998 __ ___ __ __"></div><div class="field"><label>Город и адрес доставки</label><textarea name="address" required rows="2" placeholder="Город, улица, дом"></textarea></div><div class="field"><label>Комментарий (необязательно)</label><textarea name="comment" rows="2"></textarea></div><button class="btn" style="width:100%" type="submit">ОТПРАВИТЬ ЗАКАЗ</button></form><p class="muted">Демо-режим: для реальной отправки требуется развернуть сервер и добавить Telegram-токен в секретные настройки.</p></div><div id="result"></div></div></div>
-<script>
-const products=[
-{id:1,name:'Oversized Jacket',category:'Куртки',price:450000,img:'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=700&q=85'},
-{id:2,name:'Essential Cotton Tee',category:'Футболки',price:180000,img:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=700&q=85'},
-{id:3,name:'Classic Cargo Pants',category:'Брюки',price:320000,img:'https://images.unsplash.com/photo-1518639192441-8fce0a366e2e?auto=format&fit=crop&w=700&q=85'},
-{id:4,name:'Minimal Hoodie',category:'Толстовки',price:290000,img:'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=700&q=85'},
-{id:5,name:'Daily Shirt',category:'Рубашки',price:260000,img:'https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=700&q=85'},
-{id:6,name:'Relaxed Trousers',category:'Брюки',price:340000,img:'https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&w=700&q=85'},
-{id:7,name:'Urban Bomber',category:'Куртки',price:520000,img:'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=700&q=85'},
-{id:8,name:'Premium Sweatshirt',category:'Толстовки',price:310000,img:'https://images.unsplash.com/photo-1578681994506-b8f463449011?auto=format&fit=crop&w=700&q=85'}];
-let category='Все',cart=[];const money=n=>new Intl.NumberFormat('ru-RU').format(n)+' UZS';
-function renderFilters(){let cats=['Все',...new Set(products.map(p=>p.category))];document.getElementById('filters').innerHTML=cats.map(c=>`<button class="filter ${c===category?'active':''}" onclick="setCategory('${c}')">${c}</button>`).join('')}
-function setCategory(c){category=c;renderFilters();renderProducts()}
-function renderProducts(){document.getElementById('products').innerHTML=products.filter(p=>category==='Все'||p.category===category).map(p=>`<article class="product"><img class="product-img" src="${p.img}" alt="${p.name}" loading="lazy"><h3>${p.name}</h3><div class="price">${money(p.price)}</div><button class="add" onclick="addToCart(${p.id})">ДОБАВИТЬ В КОРЗИНУ</button></article>`).join('')}
-function addToCart(id){let p=products.find(x=>x.id===id),found=cart.find(x=>x.id===id);if(found)found.qty++;else cart.push({...p,qty:1,size:'M'});updateCart();openCart()}
-function updateCart(){document.getElementById('count').textContent=cart.reduce((s,x)=>s+x.qty,0);document.getElementById('total').textContent=money(cart.reduce((s,x)=>s+x.price*x.qty,0));document.getElementById('cartItems').innerHTML=cart.length?cart.map(x=>`<div class="cartline"><div><b>${x.name}</b><div class="muted">Размер <select onchange="changeSize(${x.id},this.value)"><option ${x.size==='S'?'selected':''}>S</option><option ${x.size==='M'?'selected':''}>M</option><option ${x.size==='L'?'selected':''}>L</option><option ${x.size==='XL'?'selected':''}>XL</option><option ${x.size==='XXL'?'selected':''}>XXL</option></select></div><div class="muted">${money(x.price)}</div></div><div class="qty"><button onclick="qty(${x.id},-1)">−</button> ${x.qty} <button onclick="qty(${x.id},1)">+</button></div></div>`).join(''):'<div class="empty">Корзина пока пуста</div>'}
-function changeSize(id,v){cart.find(x=>x.id===id).size=v}function qty(id,d){let x=cart.find(x=>x.id===id);x.qty+=d;if(x.qty<=0)cart=cart.filter(y=>y.id!==id);updateCart()}
-function openCart(){document.getElementById('cartModal').classList.add('show');updateCart()}function closeCart(){document.getElementById('cartModal').classList.remove('show')}function showCheckout(){if(!cart.length){alert('Сначала добавьте товар в корзину');return}document.getElementById('checkout').classList.remove('hidden')}
-document.getElementById('orderForm').addEventListener('submit',async e=>{e.preventDefault();const f=new FormData(e.target);const order={customer:Object.fromEntries(f.entries()),items:cart.map(({id,name,price,qty,size})=>({id,name,price,qty,size})),total:cart.reduce((s,x)=>s+x.price*x.qty,0),currency:'UZS'};try{const r=await fetch('/api/order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(order)});if(!r.ok)throw new Error('server');document.getElementById('result').innerHTML='<div class="notice">Заказ отправлен! Мы свяжемся с вами для подтверждения.</div>';cart=[];updateCart();e.target.reset()}catch(err){document.getElementById('result').innerHTML='<div class="notice">Сайт пока работает в демонстрационном режиме. Заказы ещё не отправляются в Telegram: сначала нужно развернуть серверную часть и добавить секретный токен бота.</div>'}});
-renderFilters();renderProducts();updateCart();
-</script></body></html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ZARDA — современная одежда с доставкой по Узбекистану</title>
+<meta name="description" content="ZARDA.SHOP — минималистичная одежда на каждый день: пальто, трикотаж, рубашки, брюки. Доставка по всему Узбекистану, оформление заказа онлайн.">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ZARDA.SHOP">
+<meta property="og:title" content="ZARDA — современная одежда">
+<meta property="og:description" content="Чистые силуэты, спокойные оттенки и внимание к деталям. Доставка по Узбекистану.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1200&h=630&q=80">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://images.unsplash.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Jost:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body>
+<div id="site-header"></div>
+<main id="main">
+  <section class="hero" aria-label="Новая коллекция">
+    <img id="heroImg" src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1400&q=80" srcset="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=700&q=80 700w, https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1400&q=80 1400w, https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=2200&q=80 2200w" sizes="100vw" alt="Одежда спокойных оттенков на вешалках" fetchpriority="high">
+    <div class="hero-copy">
+      <p class="eyebrow">Коллекция осень — зима</p>
+      <h1 class="display h-xl">Тихая роскошь каждого дня</h1>
+      <div class="hero-actions">
+        <a class="btn btn-light" href="/catalog?sort=new">Новинки</a>
+        <a class="btn btn-outline-light" href="/catalog">Весь каталог</a>
+      </div>
+    </div>
+    <span class="hero-demo" id="heroDemo" hidden>Фото-пример</span>
+  </section>
+
+  <nav class="wrap cat-rail-wrap" aria-label="Категории">
+    <div class="cat-rail" id="catRail"></div>
+  </nav>
+
+  <section class="wrap section" aria-labelledby="newTitle">
+    <div class="section-head">
+      <div><p class="eyebrow">Только что поступили</p><h2 class="display h-l" id="newTitle">Новая коллекция</h2></div>
+      <a class="arrow-link" href="/catalog?sort=new">Смотреть все</a>
+    </div>
+    <div class="grid" id="newGrid"></div>
+  </section>
+
+  <section class="split reveal" aria-labelledby="edTitle">
+    <div class="split-media" id="editorialMedia"></div>
+    <div class="split-copy">
+      <p class="eyebrow">Верхняя одежда</p>
+      <h2 class="display h-l" id="edTitle">Пальто, с которого начинается образ</h2>
+      <p>Шерстяные пальто прямого кроя, кожаные куртки и бомберы — вещи, которые служат не один сезон.</p>
+      <a class="btn" href="/catalog?category=outerwear">Смотреть верхнюю одежду</a>
+    </div>
+  </section>
+
+  <section class="wrap section" aria-labelledby="bestTitle">
+    <div class="section-head">
+      <div><p class="eyebrow">Выбор покупателей</p><h2 class="display h-l" id="bestTitle">Бестселлеры</h2></div>
+      <a class="arrow-link" href="/catalog?sort=popular">Смотреть все</a>
+    </div>
+    <div class="grid" id="bestGrid"></div>
+  </section>
+
+  <section class="wrap promos" aria-label="Подборки" id="promos"></section>
+
+  <section class="wrap section story reveal" aria-labelledby="storyTitle">
+    <div class="story-media" id="storyMedia"></div>
+    <div class="story-copy">
+      <p class="eyebrow">О бренде</p>
+      <h2 class="display h-l" id="storyTitle">Меньше вещей. Больше стиля.</h2>
+      <p>ZARDA — это гардероб из вещей, которые не выходят из моды: чистые силуэты, натуральные оттенки и внимание к деталям. Мы отбираем модели, которые легко сочетать между собой и носить не один сезон.</p>
+      <p>Каждый заказ лично подтверждает менеджер — чтобы размер, цвет и доставка были именно такими, как вы ожидаете.</p>
+      <a class="arrow-link" href="/about">Наша история</a>
+    </div>
+  </section>
+
+  <section class="wrap" aria-label="Почему ZARDA">
+    <div class="trust">
+      <div><h3>Доставка по Узбекистану</h3><p>Ташкент и все регионы страны.</p></div>
+      <div><h3>Подтверждение заказа</h3><p>Менеджер уточнит размер, доставку и оплату.</p></div>
+      <div><h3>Оплата после подтверждения</h3><p>Никаких данных карты на сайте.</p></div>
+      <div><h3>Обмен и возврат</h3><p>Поможем, если размер не подошёл. <a class="link" href="/returns">Условия</a></p></div>
+    </div>
+  </section>
+  <div style="height:72px"></div>
+</main>
+<div id="site-footer"></div>
+<noscript><p style="padding:16px;text-align:center">Для работы магазина включите JavaScript в браузере.</p></noscript>
+<script type="module" src="/assets/js/pages/home.js"></script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Каталог — ZARDA</title>
+<meta name="description" content="Каталог одежды ZARDA: верхняя одежда, трикотаж, рубашки, футболки, брюки и платья. Цены в сумах, доставка по Узбекистану.">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://images.unsplash.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Jost:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body>
+<div id="site-header"></div>
+<main id="main" class="wrap">
+  <header class="page-head">
+    <p class="eyebrow">Магазин</p>
+    <h1 class="display h-l" id="catTitle">Каталог</h1>
+  </header>
+
+  <div class="cats" id="cats" role="group" aria-label="Категории"></div>
+
+  <div class="toolbar">
+    <label class="search" for="q">
+      <span class="sr-only">Поиск по каталогу</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+      <input id="q" type="search" placeholder="Поиск" autocomplete="off" enterkeyhint="search">
+    </label>
+    <span class="result-count" id="count" aria-live="polite"></span>
+    <span class="spacer"></span>
+    <button class="filter-btn" id="filterBtn" aria-expanded="false" aria-controls="filters"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg><span id="filterLbl">Фильтры</span></button>
+    <label><span class="sr-only">Сортировка</span>
+      <select class="select" id="sort">
+        <option value="featured">Рекомендуемые</option>
+        <option value="new">Сначала новинки</option>
+        <option value="popular">Популярные</option>
+        <option value="price-asc">Цена: по возрастанию</option>
+        <option value="price-desc">Цена: по убыванию</option>
+      </select>
+    </label>
+  </div>
+
+  <form class="filters sheet" id="filters" data-overlay role="dialog" aria-label="Фильтры" hidden>
+    <div class="sheet-head"><span class="qv-grab" aria-hidden="true"></span><h2>Фильтры</h2><button type="button" class="icon-btn" data-close aria-label="Закрыть фильтры"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div>
+    <div class="sheet-body">
+      <fieldset><legend>Наличие</legend><div class="opts"><button type="button" class="opt" id="fStock" aria-pressed="false">Только в наличии</button></div></fieldset>
+      <fieldset><legend>Размер</legend><div class="opts" id="fSizes"></div></fieldset>
+      <fieldset><legend>Цвет</legend><div class="opts" id="fColors"></div></fieldset>
+      <fieldset><legend>Цена, сум</legend>
+        <div class="price-row">
+          <label class="sr-only" for="pmin">Цена от</label><input id="pmin" type="number" inputmode="numeric" min="0" step="10000" placeholder="от">
+          <span aria-hidden="true">—</span>
+          <label class="sr-only" for="pmax">Цена до</label><input id="pmax" type="number" inputmode="numeric" min="0" step="10000" placeholder="до">
+        </div>
+      </fieldset>
+    </div>
+    <div class="sheet-foot"><button type="button" class="btn btn-ghost" id="reset">Сбросить</button><button type="button" class="btn" id="applyFilters" data-close>Показать</button></div>
+  </form>
+
+  <div class="grid" id="grid" aria-live="polite"></div>
+  <div class="no-results" id="empty" hidden>
+    <p>Ничего не найдено. Попробуйте изменить запрос или фильтры.</p>
+    <button class="btn btn-ghost" id="reset2" type="button">Сбросить всё</button>
+  </div>
+  <div style="height:96px"></div>
+</main>
+<div id="site-footer"></div>
+<noscript><p style="padding:16px;text-align:center">Для работы магазина включите JavaScript в браузере.</p></noscript>
+<script type="module" src="/assets/js/pages/catalog.js"></script>
+</body>
+</html>

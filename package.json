@@ -1,0 +1,7 @@
+{
+  "name": "zarda-shop",
+  "private": true,
+  "type": "module",
+  "description": "ZARDA.SHOP storefront (static) + Vercel serverless order endpoint. No build step, no dependencies.",
+  "engines": { "node": ">=20" }
+}
