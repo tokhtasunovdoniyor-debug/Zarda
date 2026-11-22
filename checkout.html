@@ -3,69 +3,70 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Оформление заказа — ZARDA</title>
-<meta name="description" content="Оформление заказа в ZARDA.SHOP">
+<title data-uz="Buyurtma berish — ZARDA">Оформление заказа — ZARDA</title>
+<meta name="description" content="Оформление заказа в ZARDA.SHOP" data-uz-content="ZARDA.SHOP da buyurtma berish">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Jost:wght@300;400;500&display=swap">
+<script src="/assets/js/lang.js"></script>
 <link rel="stylesheet" href="/assets/css/styles.css">
 </head>
 <body>
 <div id="site-header"></div>
 <main id="main" class="wrap">
-  <header class="page-head"><p class="eyebrow">Корзина · Доставка · Подтверждение</p><h1 class="display h-l">Оформление заказа</h1></header>
+  <header class="page-head"><p class="eyebrow" data-uz="Savat · Yetkazib berish · Tasdiqlash">Корзина · Доставка · Подтверждение</p><h1 class="display h-l" data-uz="Buyurtma berish">Оформление заказа</h1></header>
 
-  <div id="emptyState" class="empty" hidden><p>Ваша корзина пуста.</p><a class="btn" href="/catalog">Перейти в каталог</a></div>
+  <div id="emptyState" class="empty" hidden><p data-uz="Savatingiz boʻsh.">Ваша корзина пуста.</p><a class="btn" href="/catalog" data-uz="Katalogga oʻtish">Перейти в каталог</a></div>
 
   <div class="co" id="checkout" hidden>
     <form id="orderForm" novalidate>
-      <h2>Данные получателя</h2>
+      <h2 data-uz="Qabul qiluvchi maʼlumotlari">Данные получателя</h2>
       <div class="form-grid">
-        <div class="field full"><label for="name">Имя и фамилия *</label><input id="name" name="name" autocomplete="name" required maxlength="80"><p class="err" id="name-err"></p></div>
-        <div class="field full"><label for="phone">Телефон *</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="+998 90 123 45 67" maxlength="20"><p class="err" id="phone-err"></p></div>
-        <div class="field"><label for="citySel">Город / область *</label><select id="citySel" name="citySel" required></select><p class="err" id="city-err"></p></div>
-        <div class="field" id="cityOtherWrap" hidden><label for="cityOther">Ваш город *</label><input id="cityOther" name="cityOther" maxlength="60" autocomplete="address-level2"></div>
-        <div class="field full"><label for="address">Адрес доставки *</label><textarea id="address" name="address" rows="2" required maxlength="300" autocomplete="street-address" placeholder="Улица, дом, квартира, ориентир"></textarea><p class="err" id="address-err"></p></div>
-        <div class="field full"><label for="comment">Комментарий к заказу</label><textarea id="comment" name="comment" rows="3" maxlength="1000" placeholder="Удобное время для звонка, пожелания"></textarea><p class="err" id="comment-err"></p></div>
+        <div class="field full"><label for="name" data-uz="Ism va familiya *">Имя и фамилия *</label><input id="name" name="name" autocomplete="name" required maxlength="80"><p class="err" id="name-err"></p></div>
+        <div class="field full"><label for="phone" data-uz="Telefon *">Телефон *</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="+998 90 123 45 67" maxlength="20"><p class="err" id="phone-err"></p></div>
+        <div class="field"><label for="citySel" data-uz="Shahar / viloyat *">Город / область *</label><select id="citySel" name="citySel" required></select><p class="err" id="city-err"></p></div>
+        <div class="field" id="cityOtherWrap" hidden><label for="cityOther" data-uz="Shahringiz *">Ваш город *</label><input id="cityOther" name="cityOther" maxlength="60" autocomplete="address-level2"></div>
+        <div class="field full"><label for="address" data-uz="Yetkazib berish manzili *">Адрес доставки *</label><textarea id="address" name="address" rows="2" required maxlength="300" autocomplete="street-address" placeholder="Улица, дом, квартира, ориентир" data-uz-placeholder="Koʻcha, uy, xonadon, moʻljal"></textarea><p class="err" id="address-err"></p></div>
+        <div class="field full"><label for="comment" data-uz="Buyurtmaga izoh">Комментарий к заказу</label><textarea id="comment" name="comment" rows="3" maxlength="1000" placeholder="Удобное время для звонка, пожелания" data-uz-placeholder="Qoʻngʻiroq uchun qulay vaqt, istaklar"></textarea><p class="err" id="comment-err"></p></div>
         <div class="hp" aria-hidden="true"><label for="website">Не заполняйте это поле</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
       </div>
 
-      <h2 style="margin-top:36px">Оплата и доставка</h2>
-      <div class="alert">После оформления менеджер свяжется с вами в течение рабочего дня, подтвердит наличие, стоимость доставки и способ оплаты. <a class="link" href="/payment">Подробнее об оплате</a></div>
+      <h2 style="margin-top:36px" data-uz="Toʻlov va yetkazib berish">Оплата и доставка</h2>
+      <div class="alert" data-uz-html="Buyurtmadan soʻng menejer ish kuni davomida siz bilan bogʻlanadi, mavjudlik, yetkazib berish narxi va toʻlov usulini tasdiqlaydi. &lt;a class=&quot;link&quot; href=&quot;/payment&quot;&gt;Toʻlov haqida batafsil&lt;/a&gt;">После оформления менеджер свяжется с вами в течение рабочего дня, подтвердит наличие, стоимость доставки и способ оплаты. <a class="link" href="/payment">Подробнее об оплате</a></div>
 
       <div id="formError" class="alert error" role="alert" hidden></div>
-      <button class="btn btn-full" id="submitBtn" type="submit">Подтвердить заказ</button>
-      <p class="consent">Нажимая кнопку, вы соглашаетесь на обработку персональных данных согласно <a href="/privacy">политике конфиденциальности</a>.</p>
+      <button class="btn btn-full" id="submitBtn" type="submit" data-uz="Buyurtmani tasdiqlash">Подтвердить заказ</button>
+      <p class="consent" data-uz-html="Tugmani bosish orqali siz &lt;a href=&quot;/privacy&quot;&gt;maxfiylik siyosati&lt;/a&gt;ga muvofiq shaxsiy maʼlumotlaringiz qayta ishlanishiga rozilik bildirasiz.">Нажимая кнопку, вы соглашаетесь на обработку персональных данных согласно <a href="/privacy">политике конфиденциальности</a>.</p>
     </form>
 
     <aside class="summary" aria-labelledby="sumTitle">
-      <h2 id="sumTitle">Ваш заказ</h2>
+      <h2 id="sumTitle" data-uz="Buyurtmangiz">Ваш заказ</h2>
       <div id="sumLines"></div>
       <div class="totals">
-        <div><span>Товары</span><span id="sumSubtotal"></span></div>
-        <div><span>Доставка</span><span class="muted">рассчитает менеджер</span></div>
-        <div class="grand"><span>Итого</span><span id="sumTotal"></span></div>
+        <div><span data-uz="Mahsulotlar">Товары</span><span id="sumSubtotal"></span></div>
+        <div><span data-uz="Yetkazib berish">Доставка</span><span class="muted" data-uz="menejer hisoblaydi">рассчитает менеджер</span></div>
+        <div class="grand"><span data-uz="Jami">Итого</span><span id="sumTotal"></span></div>
       </div>
-      <a class="link" href="#" id="editCart">Изменить корзину</a>
+      <a class="link" href="#" id="editCart" data-uz="Savatni oʻzgartirish">Изменить корзину</a>
     </aside>
   </div>
 
   <section class="success" id="success" hidden tabindex="-1" aria-live="polite">
-    <p class="eyebrow">Спасибо за заказ</p>
+    <p class="eyebrow" data-uz="Buyurtmangiz uchun rahmat">Спасибо за заказ</p>
     <p class="order-id" id="orderId"></p>
-    <p>Мы получили ваш заказ и скоро свяжемся с вами по указанному номеру, чтобы подтвердить детали, доставку и оплату.</p>
+    <p data-uz="Buyurtmangizni oldik va tez orada koʻrsatilgan raqam orqali siz bilan bogʻlanib, tafsilotlar, yetkazib berish va toʻlovni tasdiqlaymiz.">Мы получили ваш заказ и скоро свяжемся с вами по указанному номеру, чтобы подтвердить детали, доставку и оплату.</p>
     <p class="muted small" id="successTotal"></p>
     <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:28px">
-      <a class="btn" href="/catalog">Продолжить покупки</a>
-      <a class="btn btn-ghost" id="tgLink" href="#" target="_blank" rel="noopener">Написать в Telegram</a>
+      <a class="btn" href="/catalog" data-uz="Xaridni davom ettirish">Продолжить покупки</a>
+      <a class="btn btn-ghost" id="tgLink" href="#" target="_blank" rel="noopener" data-uz="Telegramʼda yozish">Написать в Telegram</a>
     </div>
   </section>
 </main>
 <div id="site-footer"></div>
-<noscript><p style="padding:16px;text-align:center">Для оформления заказа включите JavaScript в браузере.</p></noscript>
+<noscript><p style="padding:16px;text-align:center" data-uz="Buyurtma berish uchun brauzerda JavaScriptni yoqing.">Для оформления заказа включите JavaScript в браузере.</p></noscript>
 <script type="module" src="/assets/js/pages/checkout.js"></script>
 </body>
 </html>

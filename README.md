@@ -21,6 +21,9 @@ assets/js/layout.js   Header, mobile menu, cart drawer, footer, product cards, o
 assets/js/picker.js   Colour/size/quantity + add-to-cart (shared by product page and quick view)
 assets/js/quickview.js Quick product preview (bottom sheet on phones, dialog on desktop)
 assets/js/pages/      Per-page scripts
+assets/js/i18n.js     Interface texts RU/UZ, language switcher
+assets/js/lang.js     Early language pick (runs in <head>)
+data/products.uz.js   Uzbek product texts
 vercel.json           Clean URLs, security headers (CSP, HSTS, etc.)
 package.json          Marks the project as ES modules, Node 20+
 robots.txt, sitemap.xml, favicon.svg
@@ -55,6 +58,16 @@ Everything lives in `data/products.js`. Each product:
 - Stock is **not** decremented automatically (there is no database). Update `stock` after sales.
 
 Commit the change to GitHub → Vercel redeploys automatically (~30 s).
+
+## Languages (Русский / Oʻzbekcha)
+
+The visitor switches language with the RU | UZ buttons (header, mobile menu, footer); the choice is remembered in the browser. A link can force a language with `?lang=uz` or `?lang=ru`.
+
+- `assets/js/i18n.js` — all interface texts for JS-rendered parts (header, cart, product page, checkout…), `t('key')`.
+- `data/products.uz.js` — Uzbek product names/descriptions/details, category and colour names. **When you add a product, add its Uzbek text here too** (without it the Russian text is shown).
+- HTML pages — short texts carry `data-uz="…"` (also `data-uz-placeholder`, `data-uz-aria-label`, `data-uz-alt`, `data-uz-content`); long texts on info pages are written twice in `data-lang="ru"` / `data-lang="uz"` blocks.
+- `assets/js/lang.js` runs first in `<head>` so Uzbek pages don't flash Russian.
+- Orders always reach Telegram in Russian (product, colour and city names); the message includes the visitor's site language.
 
 ## Environment variables (Vercel → Project → Settings → Environment Variables)
 
