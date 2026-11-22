@@ -51,7 +51,7 @@ function render(p) {
       ${pickerHTML(p, sel)}
 
       <ul class="perks">
-        <li><strong>Доставка по Узбекистану.</strong> Стоимость и срок сообщит менеджер до оплаты.</li>
+        <li><strong>${p.preorder ? `Под заказ · ${esc(STORE.preorderTime)}.` : 'Доставка по Узбекистану.'}</strong> Ташкент — курьером, области — почтой. Стоимость доставки сообщит менеджер до оплаты.</li>
         <li><strong>Без предоплаты на сайте.</strong> Оплата после подтверждения заказа.</li>
         <li><strong>Обмен и возврат.</strong> Поможем, если размер не подошёл. <a class="link" href="/returns">Условия</a></li>
       </ul>
