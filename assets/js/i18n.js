@@ -76,6 +76,7 @@ const D = {
     perkRetB: 'Обмен и возврат.', perkRet: 'Поможем, если размер не подошёл.', terms: 'Условия',
     desc: 'Описание', details: 'Состав и детали', delPay: 'Доставка и оплата',
     delPayText: 'Мы доставляем по Ташкенту и во все регионы Узбекистана. После оформления менеджер свяжется с вами, подтвердит наличие, рассчитает доставку и согласует оплату.',
+    videoTitle: 'Видео', videoText: 'Этот товар показан на видео в нашем Telegram-канале.', videoLink: 'Смотреть видео',
     sku: 'Артикул', sampleNote: 'Демонстрационный товар: название, фото и цена являются примером.',
     // catalog
     all: 'Все', items: (v) => `${v.n} ${ruItems(v.n)}`, filters: 'Фильтры', filtersN: 'Фильтры ({n})',
@@ -127,6 +128,7 @@ const D = {
     perkRetB: 'Almashtirish va qaytarish.', perkRet: 'Oʻlcham toʻgʻri kelmasa, yordam beramiz.', terms: 'Shartlar',
     desc: 'Tavsif', details: 'Tarkibi va tafsilotlar', delPay: 'Yetkazib berish va toʻlov',
     delPayText: 'Toshkent va Oʻzbekistonning barcha viloyatlariga yetkazib beramiz. Buyurtmadan soʻng menejer siz bilan bogʻlanadi, mavjudligini tasdiqlaydi, yetkazib berish narxini hisoblaydi va toʻlovni kelishib oladi.',
+    videoTitle: 'Video', videoText: 'Bu mahsulot Telegram-kanalimizdagi videoda koʻrsatilgan.', videoLink: 'Videoni koʻrish',
     sku: 'Artikul', sampleNote: 'Namuna mahsulot: nomi, surati va narxi misol sifatida berilgan.',
     all: 'Hammasi', items: (v) => `${v.n} ta mahsulot`, filters: 'Filtrlar', filtersN: 'Filtrlar ({n})',
     showN: (v) => `${v.n} ta mahsulotni koʻrsatish`, nothing: 'Hech narsa topilmadi',
