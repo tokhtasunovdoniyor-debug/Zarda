@@ -45,6 +45,11 @@ export const CATEGORIES = [
   { id: 'vests', name: 'Безрукавки' },
   { id: 'knitwear', name: 'Трикотаж' },
   { id: 'trousers', name: 'Брюки и джинсы' },
+  // Used by products synced from the Telegram channel (lib/tgparse.js picks the category).
+  { id: 'tops', name: 'Футболки и рубашки' },
+  { id: 'shoes', name: 'Обувь' },
+  { id: 'accessories', name: 'Аксессуары' },
+  { id: 'other', name: 'Разное' },
 ];
 
 // Sizes available to order. Every size gets the same orderable quantity.
@@ -449,6 +454,31 @@ export const SITE_IMAGES = {
   story: '/images/products/zr-110-3.jpg',
   vests: '/images/products/zr-109-1.jpg',
 };
+
+// ---- products synced from the Telegram channel -----------------------------
+// New channel posts with a price become products automatically (api/telegram.js → Redis).
+// They are merged in front of the hand-made list above. In the browser this happens once on
+// page load; the order API calls loadDynamicProducts() on every request so prices are always current.
+const STATIC_PRODUCTS = PRODUCTS.slice();
+export async function loadDynamicProducts() {
+  let dyn = [];
+  try {
+    if (typeof window !== 'undefined') {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 4000);
+      const r = await fetch('/api/products', { signal: ctrl.signal });
+      clearTimeout(timer);
+      if (r.ok && (r.headers.get('content-type') || '').includes('json')) dyn = (await r.json()).products || [];
+    } else {
+      const store = await import('../lib/tgstore.js');
+      if (store.storeReady()) dyn = await store.loadDynamic();
+    }
+  } catch { /* offline or not configured: the hand-made catalog still works */ }
+  const known = new Set(STATIC_PRODUCTS.map((p) => p.id));
+  PRODUCTS.splice(0, PRODUCTS.length, ...dyn.filter((p) => p && p.id && !known.has(p.id)), ...STATIC_PRODUCTS);
+  return PRODUCTS;
+}
+if (typeof window !== 'undefined') await loadDynamicProducts();
 
 // ---- helpers shared by browser and server --------------------------------
 export const getProduct = (id) => PRODUCTS.find((p) => p.id === id) || null;

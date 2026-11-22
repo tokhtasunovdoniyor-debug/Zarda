@@ -12,6 +12,22 @@ export const UZ_CATEGORIES = {
   vests: 'Nimchalar',
   knitwear: 'Trikotaj',
   trousers: 'Shimlar va jinsilar',
+  tops: 'Futbolka va koʻylaklar',
+  shoes: 'Poyabzal',
+  accessories: 'Aksessuarlar',
+  other: 'Turli',
+};
+
+// Short Uzbek names for products synced from Telegram whose name is a single item word.
+export const UZ_WORDS = {
+  'Куртка': 'Kurtka', 'Пуховик': 'Puxovik', 'Бомбер': 'Bomber', 'Ветровка': 'Vetrovka', 'Джакет': 'Jaket', 'Жакет': 'Jaket',
+  'Пальто': 'Palto', 'Плащ': 'Plashch', 'Безрукавка': 'Nimcha', 'Жилетка': 'Jilet', 'Жилет': 'Jilet',
+  'Кардиган': 'Kardigan', 'Джемпер': 'Jemper', 'Свитер': 'Sviter', 'Полузамок': 'Yarim zamokli jemper', 'Зипка': 'Zipka',
+  'Кофта': 'Kofta', 'Лонгслив': 'Longsliv', 'Водолазка': 'Vodolazka', 'Худи': 'Xudi', 'Свитшот': 'Svitshot', 'Американка': 'Amerikanka',
+  'Брюки': 'Shim', 'Штаны': 'Shim', 'Джинсы': 'Jinsi', 'Шорты': 'Shortik', 'Футболка': 'Futbolka', 'Поло': 'Polo',
+  'Рубашка': 'Koʻylak', 'Финка': 'Mayka', 'Обувь': 'Poyabzal', 'Кроссовки': 'Krossovka', 'Кеды': 'Ked', 'Туфли': 'Tufli',
+  'Тапки': 'Shippak', 'Тапочка': 'Shippak', 'Кепка': 'Kepka', 'Галстук': 'Galstuk', 'Очки': 'Koʻzoynak', 'Сумка': 'Sumka',
+  'Аксессуар': 'Aksessuar', 'Новинка': 'Yangi mahsulot',
 };
 
 // Keyed by the Russian colour name used in products.js.
@@ -38,6 +54,10 @@ export const UZ_COLORS = {
   'Серый меланж': 'Kulrang melanj',
   'Бордово-коричневый': 'Bordo-jigarrang',
   'Кремовый': 'Krem',
+  'Синий': 'Koʻk',
+  'Жёлтый': 'Sariq',
+  'Фиолетовый': 'Binafsha',
+  'Как на фото': 'Suratdagidek',
 };
 
 export const UZ_PRODUCTS = {
