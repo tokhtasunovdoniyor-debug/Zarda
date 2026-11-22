@@ -62,6 +62,7 @@ function render(p) {
         <details open><summary>${t('desc')}</summary><div class="acc-body"><p>${esc(desc)}</p></div></details>
         ${pDetails(p).length ? `<details><summary>${t('details')}</summary><div class="acc-body"><ul>${pDetails(p).map((d) => `<li>${esc(d)}</li>`).join('')}</ul></div></details>` : ''}
         <details><summary>${t('delPay')}</summary><div class="acc-body"><p>${t('delPayText')} <a class="link" href="/delivery">${t('delivery')}</a> · <a class="link" href="/payment">${t('payment')}</a></p></div></details>
+        ${p.video && p.post ? `<details open><summary>${t('videoTitle')}</summary><div class="acc-body"><p>${t('videoText')} <a class="link" href="${esc(p.post)}" target="_blank" rel="noopener">${t('videoLink')}</a></p></div></details>` : ''}
         <details><summary>${t('sku')}</summary><div class="acc-body"><p>${esc(p.id)}</p></div></details>
       </div>
       ${p.sample || STORE.demo ? `<p class="sample-note">${t('sampleNote')}</p>` : ''}
