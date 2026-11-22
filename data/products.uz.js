@@ -60,6 +60,7 @@ export const UZ_COLORS = {
   'Как на фото': 'Suratdagidek',
   'Горчичный': 'Xantal rang',
   'Мятный': 'Yalpiz rang',
+  'Серо-синий': 'Kulrang-koʻk',
 };
 
 export const UZ_PRODUCTS = {
