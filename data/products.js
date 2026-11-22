@@ -752,8 +752,8 @@ const STATIC_PRODUCTS = PRODUCTS.slice();
 // Better photos for synced products whose post had only a video (Telegram gives bots a tiny cover).
 // Keys are synced product ids (tg<post>-<n>); files are cut-outs from the post's video on white.
 const DYNAMIC_IMAGES = {
-  'tg763-1': ['/images/products/tg763-1-1.jpg', '/images/products/tg763-1-2.jpg', '/images/products/tg763-1-3.jpg'],
-  'tg763-2': ['/images/products/tg763-2-1.jpg', '/images/products/tg763-2-2.jpg', '/images/products/tg763-2-3.jpg'],
+  'tg763-1': ['/images/products/tg763-1-main.jpg', '/images/products/tg763-1-1.jpg', '/images/products/tg763-1-2.jpg', '/images/products/tg763-1-3.jpg'],
+  'tg763-2': ['/images/products/tg763-2-main.jpg', '/images/products/tg763-2-1.jpg', '/images/products/tg763-2-2.jpg', '/images/products/tg763-2-3.jpg'],
 };
 export async function loadDynamicProducts() {
   let dyn = [];
