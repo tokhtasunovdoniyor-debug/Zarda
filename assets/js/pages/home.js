@@ -2,6 +2,7 @@ import { PRODUCTS, CATEGORIES, SITE_IMAGES, STORE, isInStock } from '/data/produ
 import { initLayout, productCard, icon } from '/assets/js/layout.js';
 import { imgTag, esc } from '/assets/js/store.js';
 import { initReveal } from '/assets/js/reveal.js';
+import { t, catName } from '/assets/js/i18n.js';
 
 initLayout();
 
@@ -12,7 +13,7 @@ document.getElementById('newGrid').innerHTML = (newIn.length ? newIn : visible.s
 document.getElementById('bestGrid').innerHTML = (best.length ? best : visible.slice(0, 4)).map((p) => productCard(p)).join('');
 
 // Section photos come from SITE_IMAGES / products; in demo mode they are labelled as examples.
-const demoTag = STORE.demo ? '<span class="demo-tag">Фото-пример</span>' : '';
+const demoTag = STORE.demo ? `<span class="demo-tag">${t('samplePhoto')}</span>` : '';
 
 // Category rail: every category that has products, with its first (featured first) product photo.
 const cats = CATEGORIES.map((c) => {
@@ -23,15 +24,15 @@ const cats = CATEGORIES.map((c) => {
 document.getElementById('catRail').innerHTML = cats.map((c) => `
   <a class="cat-tile" href="/catalog?category=${c.id}">
     <span class="cat-img">${imgTag(c.img, { alt: '', sizes: '(min-width:1024px) 13vw, 34vw', w: 400 })}</span>
-    <span class="cat-name">${esc(c.name)}</span>
-  </a>`).join('') + `<a class="cat-tile cat-all" href="/catalog"><span class="cat-img">${icon.arrow}</span><span class="cat-name">Весь каталог</span></a>`;
+    <span class="cat-name">${esc(catName(c))}</span>
+  </a>`).join('') + `<a class="cat-tile cat-all" href="/catalog"><span class="cat-img">${icon.arrow}</span><span class="cat-name">${t('allCatalog')}</span></a>`;
 
-document.getElementById('editorialMedia').innerHTML = imgTag(SITE_IMAGES.editorial, { alt: 'Мужчина в куртке ZARDA', sizes: '(min-width:900px) 50vw, 100vw', w: 1200 }) + demoTag;
+document.getElementById('editorialMedia').innerHTML = imgTag(SITE_IMAGES.editorial, { alt: t('altEditorial'), sizes: '(min-width:900px) 50vw, 100vw', w: 1200 }) + demoTag;
 
 const knit = visible.find((p) => p.category === 'knitwear' && p.featured) || visible.find((p) => p.category === 'knitwear');
 const promos = [
-  knit && { href: '/catalog?category=knitwear', img: knit.images[0], eyebrow: 'Трикотаж', title: 'Мягкие фактуры сезона', cta: 'Выбрать трикотаж' },
-  { href: '/catalog?category=vests', img: SITE_IMAGES.vests, eyebrow: 'Безрукавки', title: 'Лёгкое тепло для города', cta: 'Выбрать безрукавку' },
+  knit && { href: '/catalog?category=knitwear', img: knit.images[0], eyebrow: t('promoKnitE'), title: t('promoKnitT'), cta: t('promoKnitC') },
+  { href: '/catalog?category=vests', img: SITE_IMAGES.vests, eyebrow: t('promoVestE'), title: t('promoVestT'), cta: t('promoVestC') },
 ].filter(Boolean);
 document.getElementById('promos').innerHTML = promos.map((b) => `
   <a class="promo reveal" href="${b.href}">
@@ -39,6 +40,6 @@ document.getElementById('promos').innerHTML = promos.map((b) => `
     <span class="promo-copy"><span class="eyebrow">${esc(b.eyebrow)}</span><span class="display promo-title">${esc(b.title)}</span><span class="arrow-link">${esc(b.cta)}</span></span>
   </a>`).join('');
 
-document.getElementById('storyMedia').innerHTML = imgTag(SITE_IMAGES.story, { alt: 'Стёганая безрукавка ZARDA с аксессуарами', sizes: '(min-width:900px) 45vw, 100vw', w: 1200 }) + demoTag;
+document.getElementById('storyMedia').innerHTML = imgTag(SITE_IMAGES.story, { alt: t('altStory'), sizes: '(min-width:900px) 45vw, 100vw', w: 1200 }) + demoTag;
 
 initReveal();

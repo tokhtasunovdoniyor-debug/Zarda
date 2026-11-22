@@ -2,6 +2,7 @@ import { PRODUCTS, CATEGORIES, sizesOf, stockOf } from '/data/products.js';
 import { initLayout, productCard, openOverlay } from '/assets/js/layout.js';
 import { isInStock } from '/data/products.js';
 import { esc } from '/assets/js/store.js';
+import { t, pName, pDesc, catName, colorName } from '/assets/js/i18n.js';
 
 initLayout();
 
@@ -9,7 +10,7 @@ const $ = (id) => document.getElementById(id);
 const visible = PRODUCTS.filter((p) => p.available !== false);
 
 // Option lists derived from data, so new sizes/colors appear automatically.
-const SIZE_ORDER = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+const SIZE_ORDER = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '2XL', 'XXXL', '3XL', '4XL'];
 const allSizes = [...new Set(visible.flatMap(sizesOf))].sort((a, b) => {
   const ia = SIZE_ORDER.indexOf(a), ib = SIZE_ORDER.indexOf(b);
   if (ia > -1 && ib > -1) return ia - ib;
@@ -32,7 +33,7 @@ const state = {
 const mobile = () => window.matchMedia('(max-width: 767px)').matches;
 if (state.category && !CATEGORIES.some((c) => c.id === state.category)) state.category = '';
 
-const norm = (s) => String(s).toLowerCase().replace(/ё/g, 'е').trim();
+const norm = (s) => String(s).toLowerCase().replace(/ё/g, 'е').replace(/[ʻʼ'‘’`]/g, '').trim();
 
 function syncUrl() {
   const p = new URLSearchParams();
@@ -55,8 +56,9 @@ function filtered() {
   let list = visible.filter((p) => {
     if (state.category && p.category !== state.category) return false;
     if (q) {
-      const cat = CATEGORIES.find((c) => c.id === p.category)?.name || '';
-      const hay = norm(`${p.name} ${p.description} ${cat} ${p.colors.map((c) => c.name).join(' ')}`);
+      // Search both languages, so a query typed in Russian or Uzbek finds the item.
+      const c = CATEGORIES.find((x) => x.id === p.category);
+      const hay = norm(`${p.name} ${pName(p)} ${p.description} ${pDesc(p)} ${c?.name || ''} ${catName(c)} ${p.colors.map((x) => `${x.name} ${colorName(x.name)}`).join(' ')}`);
       if (!q.split(/\s+/).every((w) => hay.includes(w))) return false;
     }
     if (state.sizes.size && ![...state.sizes].some((s) => stockOf(p, s) > 0)) return false;
@@ -75,30 +77,23 @@ function filtered() {
   return [...list].sort((a, b) => by(a, b) || visible.indexOf(a) - visible.indexOf(b));
 }
 
-function plural(n) {
-  const m10 = n % 10, m100 = n % 100;
-  if (m10 === 1 && m100 !== 11) return 'товар';
-  if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return 'товара';
-  return 'товаров';
-}
-
 function render() {
   const cat = CATEGORIES.find((c) => c.id === state.category);
-  $('catTitle').textContent = cat ? cat.name : 'Каталог';
-  document.title = `${cat ? cat.name : 'Каталог'} — ZARDA`;
-  $('cats').innerHTML = [{ id: '', name: 'Все' }, ...CATEGORIES.filter((c) => visible.some((p) => p.category === c.id))]
-    .map((c) => `<button class="chip" type="button" data-cat="${c.id}" aria-pressed="${c.id === state.category}">${esc(c.name)}</button>`).join('');
+  $('catTitle').textContent = cat ? catName(cat) : t('catalog');
+  document.title = `${cat ? catName(cat) : t('catalog')} — ZARDA`;
+  $('cats').innerHTML = [{ id: '', label: t('all') }, ...CATEGORIES.filter((c) => visible.some((p) => p.category === c.id)).map((c) => ({ id: c.id, label: catName(c) }))]
+    .map((c) => `<button class="chip" type="button" data-cat="${c.id}" aria-pressed="${c.id === state.category}">${esc(c.label)}</button>`).join('');
   $('fSizes').innerHTML = allSizes.map((s) => `<button class="opt" type="button" data-size="${esc(s)}" aria-pressed="${state.sizes.has(s)}">${esc(s)}</button>`).join('');
-  $('fColors').innerHTML = allColors.map((c) => `<button class="opt" type="button" data-color="${esc(c.name)}" aria-pressed="${state.colors.has(c.name)}"><i style="background:${esc(c.hex)}"></i>${esc(c.name)}</button>`).join('');
+  $('fColors').innerHTML = allColors.map((c) => `<button class="opt" type="button" data-color="${esc(c.name)}" aria-pressed="${state.colors.has(c.name)}"><i style="background:${esc(c.hex)}"></i>${esc(colorName(c.name))}</button>`).join('');
 
   const list = filtered();
   $('grid').innerHTML = list.map((p, i) => productCard(p, { eager: i < 2 })).join('');
   $('empty').hidden = list.length > 0;
-  $('count').textContent = `${list.length} ${plural(list.length)}`;
+  $('count').textContent = t('items', { n: list.length });
   const active = state.sizes.size + state.colors.size + (state.min ? 1 : 0) + (state.max ? 1 : 0) + (state.stock ? 1 : 0);
-  $('filterLbl').textContent = active ? `Фильтры (${active})` : 'Фильтры';
+  $('filterLbl').textContent = active ? t('filtersN', { n: active }) : t('filters');
   $('fStock').setAttribute('aria-pressed', String(state.stock));
-  $('applyFilters').textContent = list.length ? `Показать ${list.length} ${plural(list.length)}` : 'Ничего не найдено';
+  $('applyFilters').textContent = list.length ? t('showN', { n: list.length }) : t('nothing');
   syncUrl();
 }
 
@@ -110,8 +105,8 @@ $('pmax').value = state.max;
 if (!mobile() && (state.sizes.size || state.colors.size || state.min || state.max || state.stock)) { $('filters').hidden = false; $('filterBtn').setAttribute('aria-expanded', 'true'); }
 if (location.hash === '#q') setTimeout(() => $('q').focus(), 100);
 
-let t;
-$('q').addEventListener('input', (e) => { clearTimeout(t); t = setTimeout(() => { state.q = e.target.value.trim(); render(); }, 150); });
+let timer;
+$('q').addEventListener('input', (e) => { clearTimeout(timer); timer = setTimeout(() => { state.q = e.target.value.trim(); render(); }, 150); });
 $('sort').addEventListener('change', (e) => { state.sort = e.target.value; render(); });
 $('cats').addEventListener('click', (e) => { const b = e.target.closest('[data-cat]'); if (b) { state.category = b.dataset.cat; render(); } });
 $('filterBtn').addEventListener('click', () => {
@@ -126,7 +121,7 @@ $('filters').addEventListener('click', (e) => {
   if (s) { state.sizes.has(s.dataset.size) ? state.sizes.delete(s.dataset.size) : state.sizes.add(s.dataset.size); render(); }
   if (c) { state.colors.has(c.dataset.color) ? state.colors.delete(c.dataset.color) : state.colors.add(c.dataset.color); render(); }
 });
-const priceInput = () => { clearTimeout(t); t = setTimeout(() => { state.min = $('pmin').value.replace(/\D/g, ''); state.max = $('pmax').value.replace(/\D/g, ''); render(); }, 300); };
+const priceInput = () => { clearTimeout(timer); timer = setTimeout(() => { state.min = $('pmin').value.replace(/\D/g, ''); state.max = $('pmax').value.replace(/\D/g, ''); render(); }, 300); };
 $('pmin').addEventListener('input', priceInput);
 $('pmax').addEventListener('input', priceInput);
 function reset(all) {

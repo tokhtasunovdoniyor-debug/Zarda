@@ -2,6 +2,19 @@ import { STORE } from '/data/products.js';
 import { initLayout, openCart } from '/assets/js/layout.js';
 import { esc, money, imgTag, cartLines, cartTotal, getCart, clearCart } from '/assets/js/store.js';
 import { validateCustomer, normalizePhone, formatPhone } from '/lib/validate.js';
+import { t, lang, pName, colorName } from '/assets/js/i18n.js';
+
+// City names shown in Uzbek; the value sent to the manager stays Russian.
+const UZ_CITY = { 'Ташкент': 'Toshkent', 'Ташкентская область': 'Toshkent viloyati', 'Самарканд': 'Samarqand', 'Бухара': 'Buxoro', 'Андижан': 'Andijon', 'Фергана': 'Fargʻona', 'Наманган': 'Namangan', 'Нукус': 'Nukus', 'Карши': 'Qarshi', 'Навои': 'Navoiy', 'Джизак': 'Jizzax', 'Гулистан': 'Guliston', 'Термез': 'Termiz', 'Ургенч': 'Urganch' };
+const cityLabel = (c) => (lang === 'uz' && UZ_CITY[c]) || c;
+// Field errors from lib/validate.js are Russian; show Uzbek equivalents when needed.
+const UZ_FIELD = { name: 'errName', phone: 'errPhone', city: 'errCity', address: 'errAddress', comment: 'errComment' };
+const fieldMsg = (k, msg) => (lang === 'uz' && msg ? t(UZ_FIELD[k]) : msg);
+function apiMessage(status, data) {
+  if (lang !== 'uz') return data.error || (status === 404 ? t('serverDown') : t('sendFail'));
+  if (status === 422) return data.fields ? t('apiCustomer') : t('apiItems');
+  return { 400: t('apiBad'), 429: t('apiRate'), 503: t('apiConfig'), 502: t('apiTelegram'), 404: t('serverDown') }[status] || t('sendFail');
+}
 
 initLayout();
 
@@ -10,7 +23,7 @@ const OTHER = '__other';
 const DRAFT_KEY = 'zarda_checkout_draft';
 const KEY_KEY = 'zarda_checkout_key';
 
-$('citySel').innerHTML = '<option value="">Выберите…</option>' + STORE.cities.map((c) => `<option>${esc(c)}</option>`).join('') + `<option value="${OTHER}">Другой город</option>`;
+$('citySel').innerHTML = `<option value="">${t('choose')}</option>` + STORE.cities.map((c) => `<option value="${esc(c)}">${esc(cityLabel(c))}</option>`).join('') + `<option value="${OTHER}">${t('otherCity')}</option>`;
 $('tgLink').href = `https://t.me/${STORE.telegram}`;
 
 const ss = {
@@ -27,10 +40,10 @@ function renderSummary() {
   if (!lines.length) return;
   $('sumLines').innerHTML = lines.map((l) => `
     <div class="line">
-      <div class="line-img">${imgTag(l.product.images[0], { alt: l.product.name, w: 160, sizes: '64px' })}</div>
+      <div class="line-img">${imgTag(l.product.images[0], { alt: pName(l.product), w: 160, sizes: '64px' })}</div>
       <div class="line-info">
-        <span class="line-name">${esc(l.product.name)}</span>
-        <div class="muted">Размер ${esc(l.size)} · ${esc(l.color)}</div>
+        <span class="line-name">${esc(pName(l.product))}</span>
+        <div class="muted">${esc(t('sizeColor', { s: l.size, c: colorName(l.color) }))}</div>
         <div class="line-row" style="margin:6px 0 0"><span class="muted">${l.qty} × ${money(l.price)}</span><span>${money(l.lineTotal)}</span></div>
       </div>
     </div>`).join('');
@@ -60,7 +73,7 @@ function showErrors(errors) {
     const input = $(map[k]);
     const wrap = input.closest('.field');
     const errEl = $(`${k}-err`);
-    const msg = errors[k];
+    const msg = fieldMsg(k, errors[k]);
     // City errors render under the dropdown even when "other" is used.
     const errWrap = k === 'city' ? $('citySel').closest('.field') : wrap;
     errWrap.classList.toggle('invalid', !!msg); wrap.classList.toggle('invalid', !!msg);
@@ -91,7 +104,7 @@ $('orderForm').addEventListener('submit', async (e) => {
 
   submitting = true;
   const btn = $('submitBtn');
-  btn.disabled = true; btn.innerHTML = '<span class="spinner" aria-hidden="true"></span> Отправляем…';
+  btn.disabled = true; btn.innerHTML = `<span class="spinner" aria-hidden="true"></span> ${t('sending')}`;
   const total = cartTotal();
   try {
     const r = await fetch('/api/order', {
@@ -104,12 +117,13 @@ $('orderForm').addEventListener('submit', async (e) => {
         items: getCart().map(({ id, size, color, qty }) => ({ id, size, color, qty })),
         clientTotal: total,
         currency: 'UZS',
+        lang,
       }),
     });
     const data = await r.json().catch(() => ({}));
     if (!r.ok || !data.ok) {
       if (data.fields) showErrors(data.fields);
-      throw new Error(data.error || (r.status === 404 ? 'Сервер заказов недоступен.' : 'Не удалось отправить заказ.'));
+      throw new Error(apiMessage(r.status, data));
     }
     // Show success first so the cart-cleared event doesn't render the "empty cart" state.
     $('success').hidden = false;
@@ -118,17 +132,17 @@ $('orderForm').addEventListener('submit', async (e) => {
     document.querySelector('.page-head').hidden = true;
     clearCart();
     ss.del(KEY_KEY); ss.del(DRAFT_KEY);
-    $('orderId').textContent = `Заказ № ${data.orderId}`;
-    $('successTotal').textContent = `Сумма товаров: ${money(data.total ?? total)}. Стоимость доставки сообщит менеджер.`;
-    document.title = 'Заказ оформлен — ZARDA';
+    $('orderId').textContent = t('orderNo', { id: data.orderId });
+    $('successTotal').textContent = t('successTotal', { sum: money(data.total ?? total) });
+    document.title = `${t('doneTitle')} — ZARDA`;
     window.scrollTo({ top: 0 });
     $('success').focus();
   } catch (err) {
-    $('formError').innerHTML = `${esc(err.message)} Если проблема повторится, напишите нам в Telegram: <a class="link" href="https://t.me/${esc(STORE.telegram)}" target="_blank" rel="noopener">@${esc(STORE.telegram)}</a>`;
+    $('formError').innerHTML = `${esc(err.message)} ${t('ifRepeat')} <a class="link" href="https://t.me/${esc(STORE.telegram)}" target="_blank" rel="noopener">@${esc(STORE.telegram)}</a>`;
     $('formError').hidden = false;
   } finally {
     submitting = false;
-    btn.disabled = false; btn.textContent = 'Подтвердить заказ';
+    btn.disabled = false; btn.textContent = t('submit');
   }
 });
 
