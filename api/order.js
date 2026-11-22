@@ -40,7 +40,7 @@ function newOrderId(now) {
 
 const fmt = (n) => new Intl.NumberFormat('ru-RU').format(n).replace(/ /g, ' ');
 
-function buildMessage(orderId, customer, lines, total, now) {
+function buildMessage(orderId, customer, lines, total, now, lang = 'ru') {
   const when = new Date(now).toLocaleString('ru-RU', { timeZone: 'Asia/Tashkent', dateStyle: 'short', timeStyle: 'short' });
   const demo = STORE.demo || lines.some((l) => l.sample);
   const items = lines.map((l, i) => `${i + 1}. ${l.name}\n   Арт. ${l.id} · Размер ${l.size} · ${l.color}\n   ${l.qty} × ${fmt(l.price)} = ${fmt(l.total)} сум`).join('\n');
@@ -58,6 +58,7 @@ function buildMessage(orderId, customer, lines, total, now) {
     `🏙 ${customer.city}`,
     `📍 ${customer.address}`,
     `💬 ${customer.comment || '—'}`,
+    `🌐 Язык сайта: ${lang === 'uz' ? 'узбекский' : 'русский'}`,
     '',
     'Оплата: после подтверждения менеджером',
   ].join('\n');
@@ -147,7 +148,7 @@ export default async function handler(req, res) {
   }
 
   const orderId = newOrderId(now);
-  const sent = await sendTelegram(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, buildMessage(orderId, c.value, items.lines, items.total, now));
+  const sent = await sendTelegram(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, buildMessage(orderId, c.value, items.lines, items.total, now, body.lang === 'uz' ? 'uz' : 'ru'));
   if (!sent) return res.status(502).json({ ok: false, error: 'Не удалось отправить заказ. Попробуйте ещё раз или напишите нам в Telegram.' });
 
   if (key) seen.set(key, { orderId, at: now });
