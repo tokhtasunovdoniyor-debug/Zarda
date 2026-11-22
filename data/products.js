@@ -749,6 +749,12 @@ export const SITE_IMAGES = {
 // They are merged in front of the hand-made list above. In the browser this happens once on
 // page load; the order API calls loadDynamicProducts() on every request so prices are always current.
 const STATIC_PRODUCTS = PRODUCTS.slice();
+// Better photos for synced products whose post had only a video (Telegram gives bots a tiny cover).
+// Keys are synced product ids (tg<post>-<n>); files are cut-outs from the post's video on white.
+const DYNAMIC_IMAGES = {
+  'tg763-1': ['/images/products/tg763-1-1.jpg', '/images/products/tg763-1-2.jpg', '/images/products/tg763-1-3.jpg'],
+  'tg763-2': ['/images/products/tg763-2-1.jpg', '/images/products/tg763-2-2.jpg', '/images/products/tg763-2-3.jpg'],
+};
 export async function loadDynamicProducts() {
   let dyn = [];
   try {
@@ -764,7 +770,8 @@ export async function loadDynamicProducts() {
     }
   } catch { /* offline or not configured: the hand-made catalog still works */ }
   const known = new Set(STATIC_PRODUCTS.map((p) => p.id));
-  PRODUCTS.splice(0, PRODUCTS.length, ...dyn.filter((p) => p && p.id && !known.has(p.id)), ...STATIC_PRODUCTS);
+  dyn = dyn.filter((p) => p && p.id && !known.has(p.id)).map((p) => (DYNAMIC_IMAGES[p.id] ? { ...p, images: DYNAMIC_IMAGES[p.id] } : p));
+  PRODUCTS.splice(0, PRODUCTS.length, ...dyn, ...STATIC_PRODUCTS);
   return PRODUCTS;
 }
 if (typeof window !== 'undefined') await loadDynamicProducts();
