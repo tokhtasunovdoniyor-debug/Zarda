@@ -750,10 +750,10 @@ export const SITE_IMAGES = {
 // page load; the order API calls loadDynamicProducts() on every request so prices are always current.
 const STATIC_PRODUCTS = PRODUCTS.slice();
 // Better photos for synced products whose post had only a video (Telegram gives bots a tiny cover).
-// Keys are synced product ids (tg<post>-<n>); files are cut-outs from the post's video on white.
+// Keys are synced product ids (tg<post>-<n>): main photo first, then designed cards (-c1 hero, -c2 details, -c3 sizes/info).
 const DYNAMIC_IMAGES = {
-  'tg763-1': ['/images/products/tg763-1-main.jpg', '/images/products/tg763-1-1.jpg', '/images/products/tg763-1-2.jpg', '/images/products/tg763-1-3.jpg'],
-  'tg763-2': ['/images/products/tg763-2-main.jpg', '/images/products/tg763-2-1.jpg', '/images/products/tg763-2-2.jpg', '/images/products/tg763-2-3.jpg'],
+  'tg763-1': ['/images/products/tg763-1-main.jpg', '/images/products/tg763-1-c1.jpg', '/images/products/tg763-1-c2.jpg', '/images/products/tg763-1-c3.jpg'],
+  'tg763-2': ['/images/products/tg763-2-main.jpg', '/images/products/tg763-2-c1.jpg', '/images/products/tg763-2-c2.jpg', '/images/products/tg763-2-c3.jpg'],
 };
 export async function loadDynamicProducts() {
   let dyn = [];
