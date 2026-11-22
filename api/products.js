@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   }
   try {
     const products = await loadDynamic();
-    res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=20, stale-while-revalidate=120');
+    res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=60, stale-while-revalidate=300');
     return res.status(200).json({ ok: true, products });
   } catch (e) {
     console.error('products load failed:', e.message);
