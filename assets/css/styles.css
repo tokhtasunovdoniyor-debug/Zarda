@@ -524,3 +524,30 @@ html[lang="uz"] [data-lang="ru"], html:not([lang="uz"]) [data-lang="uz"] { displ
 .lang-ftr button[aria-pressed="true"] { color: #fff; }
 /* Longer Uzbek menu labels: keep the desktop nav clear of the logo on small laptops. */
 @media (min-width: 1024px) and (max-width: 1279px) { .nav { gap: 16px; } .nav a { letter-spacing: .1em; font-size: 11px; } }
+
+/* ---- motion layer (assets/js/motion.js: GSAP + Lenis) --------------------- */
+/* Until the animations start, keep the hero and first cards hidden; shown anyway after 2.5 s. */
+html.motion-pending .hero-copy, html.motion-pending .hero-media, html.motion-pending .grid .card { opacity: 0; animation: motionShow 0s 2.5s forwards; }
+@keyframes motionShow { to { opacity: 1; } }
+html.motion .hero-media img { animation: none; will-change: transform; }
+html.motion .promo img { transition: none; }
+html.motion .split-media, html.motion .story-media, html.motion .info-hero { overflow: hidden; }
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+/* running line */
+.marquee { overflow: hidden; background: var(--ink); color: #eee8df; padding: 16px 0; border-top: 1px solid rgba(255,255,255,.06); }
+.marquee-track { display: flex; width: max-content; will-change: transform; }
+.marquee-chunk { display: flex; align-items: center; flex: none; }
+.marquee span { font-family: var(--serif); font-size: clamp(20px, 2.6vw, 34px); letter-spacing: .02em; white-space: nowrap; padding: 0 22px; }
+.marquee i { font-style: normal; font-size: 12px; opacity: .6; }
+/* rotating badge on the hero */
+.hero-badge { position: absolute; z-index: 2; right: calc(var(--gutter) - 4px); top: 18px; width: 96px; height: 96px; color: #fff; display: grid; place-items: center; border-radius: 50%; background: rgba(20,18,15,.32); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+@media (min-width: 768px) { .hero-badge { width: 132px; height: 132px; top: auto; bottom: 80px; right: var(--gutter); } }
+.hero-badge svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.hero-badge text { fill: currentColor; font-family: var(--sans); font-size: 8.4px; letter-spacing: .2em; text-transform: uppercase; }
+.hero-badge span { font-size: 16px; }
+.cart-n { display: inline-block; }
+#cartBtn { will-change: transform; }
