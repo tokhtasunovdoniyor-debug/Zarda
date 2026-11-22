@@ -15,6 +15,12 @@ about / delivery / payment / returns / contacts / privacy .html   Info pages
 data/products.js      ← THE PRODUCT CATALOG (edit this file to manage products)
 lib/validate.js       Order validation shared by browser and server
 api/order.js          POST /api/order → validates, recalculates total, sends to Telegram
+api/telegram.js       Telegram webhook: channel posts → products, /hide /show /list
+api/products.js       Products synced from the channel (JSON)
+api/photo.js          Channel photos (proxied, token stays on the server)
+api/tg-setup.js       One-click webhook setup + status
+lib/tgparse.js        Post text → products (rules, no AI)
+lib/tgstore.js        Redis storage for synced posts
 assets/css/styles.css Design system (tokens at the top: colours, fonts, spacing)
 assets/js/store.js    Cart (localStorage), money/image helpers
 assets/js/layout.js   Header, mobile menu, cart drawer, footer, product cards, overlay/scroll-lock manager
@@ -58,6 +64,19 @@ Everything lives in `data/products.js`. Each product:
 - Stock is **not** decremented automatically (there is no database). Update `stock` after sales.
 
 Commit the change to GitHub → Vercel redeploys automatically (~30 s).
+
+## Products from the Telegram channel (automatic)
+
+New posts in **t.me/www_zara_shop_uz** appear on the site by themselves (about a minute later):
+
+- A post becomes products when it has **a photo (or video) and a price line**: `Куртка - 450.000 сум`, `💰Брюки - 280.000 sum`, `Цена : 240.000`. One price line = one product; a post with several prices (a look) gives several products with the post's photos.
+- Understood extras: `Размеры: S/M/L/XL/2XL` (otherwise S–3XL; shoes 39–45), colours as emoji `⚫️🟤🔵` or words on a «цвет/расцветка» line (otherwise «Как на фото»). The name is taken from the first sentence when it describes the item (`Объёмный пуховик с капюшоном…`), otherwise the word before the price.
+- Editing a post updates the product. Deleting a post does **not** reach the site (Telegram doesn't report it) — hide it from the order chat with the bot: `/hide 812` (post number from its link), `/show 812`, `/list`.
+- Orders from synced products include a link to the post in the Telegram message.
+
+How it works: the order bot is an admin of the channel → Telegram sends posts to `api/telegram.js` → stored in Upstash Redis (`lib/tgstore.js`) → `api/products.js` turns them into products with `lib/tgparse.js` (no AI) → `data/products.js` merges them in front of the hand-made list (browser and order check). Photos are served by `api/photo.js` (the bot token never reaches the browser). Posts up to message 762 are ignored (they're already in `data/products.js`).
+
+Setup (once): connect an **Upstash Redis** store to the project in Vercel → Storage (adds `KV_REST_API_URL` / `KV_REST_API_TOKEN`), redeploy, add the bot as an **administrator** of the channel, then open **https://zarda.shop/api/tg-setup** — it connects the webhook and shows what is still missing.
 
 ## Languages (Русский / Oʻzbekcha)
 
