@@ -55,7 +55,7 @@ export function bindPicker(root, p, sel, { onAdd, onError } = {}) {
     if (!sel.size) { note.textContent = ''; return; }
     const st = stockOf(p, sel.size);
     if (st <= 2) { note.textContent = `Осталось ${st} шт. размера ${sel.size}`; note.classList.add('warn'); }
-    else { note.textContent = 'В наличии'; note.classList.add('ok'); }
+    else { note.textContent = p.preorder ? `Под заказ · ${STORE.preorderTime}` : 'В наличии'; note.classList.add('ok'); }
   }
 
   root.querySelector('.colors').addEventListener('click', (e) => {

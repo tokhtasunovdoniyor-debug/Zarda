@@ -23,7 +23,7 @@ function header() {
   const catCount = (id) => PRODUCTS.filter((p) => p.category === id && p.available !== false).length;
   return `
   <a class="skip" href="#main">Перейти к содержимому</a>
-  ${STORE.demo ? '<div class="announce">Демо-каталог · товары, фото и цены являются примерами</div>' : '<div class="announce">Доставка по всему Узбекистану · Заказ через Telegram</div>'}
+  ${STORE.demo ? '<div class="announce">Демо-каталог · товары, фото и цены являются примерами</div>' : `<div class="announce">Под заказ · ${esc(STORE.preorderTime)}</div>`}
   <header class="hdr" id="hdr">
     <div class="hdr-in">
       <div class="hdr-l">
@@ -78,7 +78,8 @@ function footer() {
       <div><h3>Компания</h3><a href="/about">О бренде</a><a href="/contacts">Контакты</a><a href="/privacy">Конфиденциальность</a></div>
       <div><h3>Мы на связи</h3>
         <a href="https://t.me/${esc(STORE.telegram)}" rel="noopener" target="_blank">Telegram</a>
-        <a href="https://instagram.com/${esc(STORE.instagram)}" rel="noopener" target="_blank">Instagram</a>
+        <a href="https://t.me/${esc(STORE.channel)}" rel="noopener" target="_blank">Telegram-канал</a>
+        <a href="https://t.me/${esc(STORE.reviews)}" rel="noopener" target="_blank">Отзывы</a>
       </div>
     </div>
     <div class="wrap ftr-bottom"><span>© ${y} ZARDA.SHOP</span><span>Цены указаны в узбекских сумах (UZS)</span></div>
@@ -89,6 +90,7 @@ function footer() {
 export function availability(p) {
   if (p.available === false || !isInStock(p)) return { key: 'out', label: 'Нет в наличии' };
   if (totalStock(p) <= LOW_STOCK) return { key: 'low', label: 'Осталось мало' };
+  if (p.preorder) return { key: 'in', label: 'Под заказ' };
   return { key: 'in', label: 'В наличии' };
 }
 
