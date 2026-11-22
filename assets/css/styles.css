@@ -198,7 +198,15 @@ p { margin: 0 0 1em; }
 /* hero — mobile: tall portrait crop; desktop: full-bleed */
 .hero { position: relative; height: calc(100svh - var(--hdr) - 34px); min-height: 520px; max-height: 980px; display: flex; align-items: flex-end; color: #fff; overflow: hidden; background: var(--sand); }
 @supports not (height: 100svh) { .hero { height: calc(100vh - var(--hdr) - 34px); } }
-.hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% 50%; animation: heroZoom 14s var(--ease) both; }
+.hero-media { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr; gap: 2px; background: var(--bone); }
+.hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; min-width: 0; animation: heroZoom 14s var(--ease) both; }
+.hero-media img:nth-child(n+2) { display: none; }
+@media (min-width: 768px) {
+  .hero-media { grid-template-columns: repeat(3, 1fr); }
+  .hero-media img:nth-child(n+2) { display: block; }
+  .hero-media img:nth-child(2) { animation-delay: .15s; }
+  .hero-media img:nth-child(3) { animation-delay: .3s; }
+}
 .hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(20,18,15,.62) 0%, rgba(20,18,15,.22) 50%, rgba(20,18,15,0) 75%), linear-gradient(90deg, rgba(20,18,15,.38) 0%, rgba(20,18,15,0) 65%); }
 .hero-copy { position: relative; z-index: 1; padding: 0 var(--gutter) calc(36px + var(--sab)); max-width: 1560px; width: 100%; margin: 0 auto; }
 @media (min-width: 768px) { .hero-copy { padding-bottom: 88px; } }
@@ -482,6 +490,9 @@ p { margin: 0 0 1em; }
 .prose a { text-decoration: underline; text-underline-offset: 3px; }
 .info-hero { aspect-ratio: 16/7; overflow: hidden; background: var(--sand); margin-bottom: 40px; }
 .info-hero img { width: 100%; height: 100%; object-fit: cover; }
+.info-hero.trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; aspect-ratio: 16/8; }
+.info-hero.trio img { min-width: 0; object-position: 50% 30%; }
+@media (max-width: 599px) { .info-hero.trio { aspect-ratio: 4/3; } }
 
 /* ---- reveal-on-scroll (content stays visible without JS) ---- */
 .has-js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
