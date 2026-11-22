@@ -4,7 +4,7 @@
 // Required environment variables (Vercel → Project → Settings → Environment Variables):
 //   TELEGRAM_BOT_TOKEN  — from @BotFather. Never put it in browser code or Git.
 //   TELEGRAM_CHAT_ID    — chat that receives orders.
-import { STORE } from '../data/products.js';
+import { STORE, loadDynamicProducts } from '../data/products.js';
 import { validateCustomer, validateItems, cleanText, formatPhone } from '../lib/validate.js';
 
 const MAX_BODY = 20_000;
@@ -43,7 +43,7 @@ const fmt = (n) => new Intl.NumberFormat('ru-RU').format(n).replace(/ /g, ' ');
 function buildMessage(orderId, customer, lines, total, now, lang = 'ru') {
   const when = new Date(now).toLocaleString('ru-RU', { timeZone: 'Asia/Tashkent', dateStyle: 'short', timeStyle: 'short' });
   const demo = STORE.demo || lines.some((l) => l.sample);
-  const items = lines.map((l, i) => `${i + 1}. ${l.name}\n   Арт. ${l.id} · Размер ${l.size} · ${l.color}\n   ${l.qty} × ${fmt(l.price)} = ${fmt(l.total)} сум`).join('\n');
+  const items = lines.map((l, i) => `${i + 1}. ${l.name}\n   Арт. ${l.id} · Размер ${l.size} · ${l.color}\n   ${l.qty} × ${fmt(l.price)} = ${fmt(l.total)} сум${/^tg\d+/.test(l.id) ? `\n   Пост: https://t.me/${STORE.channel}/${l.id.slice(2).split('-')[0]}` : ''}`).join('\n');
   const text = [
     `${demo ? '[DEMO] ' : ''}🛍 ZARDA.SHOP — НОВЫЙ ЗАКАЗ`,
     `№ ${orderId}`,
@@ -132,6 +132,7 @@ export default async function handler(req, res) {
   const c = validateCustomer(rawCustomer);
   if (!c.ok) return res.status(422).json({ ok: false, error: 'Проверьте данные покупателя', fields: c.errors });
 
+  await loadDynamicProducts(); // include products synced from the Telegram channel
   const items = validateItems(body.items);
   if (!items.ok) return res.status(422).json({ ok: false, error: items.error });
 
