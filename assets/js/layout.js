@@ -151,7 +151,8 @@ function lockScroll(on) {
   } else {
     b.style.position = ''; b.style.top = ''; b.style.left = ''; b.style.right = '';
     document.documentElement.classList.remove('noscroll');
-    window.scrollTo(0, savedY);
+    // Jump back instantly (html has scroll-behavior: smooth, which would animate from the top).
+    window.scrollTo({ top: savedY, left: 0, behavior: 'instant' });
   }
 }
 
@@ -168,7 +169,7 @@ export function openOverlay(el, { focus } = {}) {
   if (stack.some((s) => s.el === el)) return;
   const scrim = document.getElementById('scrim');
   stack.push({ el, returnTo: document.activeElement });
-  if (stack.length === 1) lockScroll(true);
+  if (stack.length === 1) { window.__lenis?.stop(); lockScroll(true); }
   el.hidden = false; scrim.hidden = false;
   el.style.zIndex = String(70 + stack.length * 2); scrim.style.zIndex = String(69 + stack.length * 2);
   requestAnimationFrame(() => requestAnimationFrame(() => { el.classList.add('open'); scrim.classList.add('open'); }));
@@ -181,7 +182,7 @@ export function closeOverlay(el) {
   const [{ returnTo }] = stack.splice(i, 1);
   const scrim = document.getElementById('scrim');
   el.classList.remove('open');
-  if (!stack.length) { scrim.classList.remove('open'); lockScroll(false); }
+  if (!stack.length) { scrim.classList.remove('open'); lockScroll(false); if (window.__lenis) { const l = window.__lenis; l.resize?.(); l.start(); l.scrollTo(savedY, { immediate: true, force: true }); } }
   else { const top = stack[stack.length - 1].el; scrim.style.zIndex = String(Number(top.style.zIndex) - 1); }
   setTimeout(() => { if (!el.classList.contains('open')) el.hidden = true; if (!stack.length) scrim.hidden = true; }, 320);
   if (returnTo && document.contains(returnTo)) returnTo.focus?.({ preventScroll: true });
@@ -275,6 +276,8 @@ export function initLayout() {
   window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
   updateCount();
+  // Animations load after the page has rendered (page scripts finish in this same tick).
+  setTimeout(() => { import('/assets/js/motion.js').then((m) => m.initMotion()).catch(() => document.documentElement.classList.remove('motion-pending')); }, 0);
 }
 
 export { imgUrl };
