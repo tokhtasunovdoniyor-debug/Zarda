@@ -4,7 +4,7 @@
 //   data-uz-alt, data-uz-content; longer prose is written twice inside data-lang="ru" / data-lang="uz" blocks.
 // • Product names/descriptions in Uzbek live in /data/products.uz.js (Russian stays the source of truth
 //   for orders, so the manager always receives Russian names in Telegram).
-import { UZ_PRODUCTS, UZ_CATEGORIES, UZ_COLORS } from '/data/products.uz.js';
+import { UZ_PRODUCTS, UZ_CATEGORIES, UZ_COLORS, UZ_WORDS } from '/data/products.uz.js';
 
 export const LANGS = [
   { id: 'ru', short: 'RU', name: 'Русский' },
@@ -156,7 +156,7 @@ export function t(key, vars = {}) {
 
 // ---- catalog data in the current language ----------------------------------
 const uz = lang === 'uz';
-export const pName = (p) => (uz && UZ_PRODUCTS[p.id]?.name) || p.name;
+export const pName = (p) => (uz && (UZ_PRODUCTS[p.id]?.name || UZ_WORDS[p.name])) || p.name;
 export const pDesc = (p) => (uz && UZ_PRODUCTS[p.id]?.description) || p.description;
 export const pDetails = (p) => (uz && UZ_PRODUCTS[p.id]?.details) || p.details || [];
 export const catName = (c) => (c ? (uz && UZ_CATEGORIES[c.id]) || c.name : '');

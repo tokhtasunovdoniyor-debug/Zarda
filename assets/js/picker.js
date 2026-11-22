@@ -22,7 +22,7 @@ export function pickerHTML(p, sel, { compact = false } = {}) {
     </div>
   </div>
   <div class="opt-group">
-    <div class="opt-label"><span>${t('size')}</span><span>${compact ? '' : numeric ? t('sizeWaist') : t('sizeIntl')}</span></div>
+    <div class="opt-label"><span>${t('size')}</span><span>${compact || p.category === 'shoes' || sizes.length === 1 ? '' : numeric ? t('sizeWaist') : t('sizeIntl')}</span></div>
     <div class="sizes" role="radiogroup" aria-label="${t('size')}">
       ${sizes.map((s) => { const out = stockOf(p, s) < 1; return `<button type="button" class="size" role="radio" aria-checked="${s === sel.size}" data-size="${esc(s)}"${out ? ` disabled aria-label="${esc(t('sizeOut', { s }))}"` : ''}>${esc(s)}</button>`; }).join('')}
     </div>
