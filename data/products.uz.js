@@ -58,6 +58,8 @@ export const UZ_COLORS = {
   'Жёлтый': 'Sariq',
   'Фиолетовый': 'Binafsha',
   'Как на фото': 'Suratdagidek',
+  'Горчичный': 'Xantal rang',
+  'Мятный': 'Yalpiz rang',
 };
 
 export const UZ_PRODUCTS = {
@@ -215,5 +217,125 @@ export const UZ_PRODUCTS = {
     name: 'Keng krem shim',
     description: 'Krem rangli erkin keng shim. Jigarrang jaket, qora futbolka va kedlar bilan yaxshi uygʻunlashadi.',
     details: ['Bichim: erkin, keng'],
+  },
+  'zr-132': {
+    name: 'Toʻgʻri bichimli palto',
+    description: 'Son oʻrtasigacha boʻlgan klassik toʻgʻri bichimli palto. Latskanli qaytarma yoqa, yashirin tugmalar, yon choʻntaklar. Jemper yoki pidjak ustidan kiyiladi — sovuq mavsum uchun saranjom obraz.',
+    details: ['Uzunligi: son oʻrtasigacha', 'Tugmali'],
+  },
+  'zr-133': {
+    name: 'Hajmli oversize puxovik',
+    description: 'Yirik gorizontal tikuvli va tik yoqali erkin bichimli issiq hajmli puxovik. Yorqin va bazaviy ranglar tanlovi.',
+    details: ['Mavsum: qish', 'Bichim: oversize'],
+  },
+  'zr-134': {
+    name: 'Kalta ikki tomonlama puxovik',
+    description: 'Kontrast astarli va tik yoqali kalta puxovik. Hajmli tikuv issiqni yaxshi saqlaydi, butun uzunlikdagi zamok.',
+    details: ['Mavsum: qish', 'Bichim: kalta'],
+  },
+  'zr-135': {
+    name: 'Kontrast astarli qavima puxovik',
+    description: 'Oq kontrast astarli va baland yoqali qora qavima puxovik. Sovuq qish uchun zich isitgich.',
+    details: ['Mavsum: qish'],
+  },
+  'zr-136': {
+    name: 'Kapyushonli puxovik',
+    description: 'Kapyushonli va gorizontal tikuvli issiq puxovik. Toʻgʻri siluet, butun uzunlikdagi zamok, yon choʻntaklar.',
+    details: ['Mavsum: qish', 'Kapyushon'],
+  },
+  'zr-137': {
+    name: 'Kapyushonli qavima puxovik',
+    description: 'Toʻq jigarrang va qora ranglardagi kapyushonli hajmli tikuvli puxovik. Har kun uchun issiq va amaliy variant.',
+    details: ['Mavsum: qish', 'Kapyushon'],
+  },
+  'zr-138': {
+    name: 'Tik yoqali kalta puxovik',
+    description: 'Baland tik yoqali toʻq koʻk kalta puxovik. Hajmli tikuv, zamok, yon choʻntaklar.',
+    details: ['Mavsum: qish', 'Bichim: kalta'],
+  },
+  'zr-139': {
+    name: 'Bomber-puxovik',
+    description: 'Bomber uslubidagi hajmli puxovik: kalta uzunlik, trikotaj yeng uchlari va etak, zich tikuv.',
+    details: ['Mavsum: qish', 'Yeng uchlari va etak: trikotaj'],
+  },
+  'zr-140': {
+    name: 'Kapyushonli toʻq koʻk puxovik',
+    description: 'Kapyushonli va butun uzunlikdagi zamokli toʻq koʻk puxovik. Jemper, vodolazka va klassik shim bilan mos.',
+    details: ['Mavsum: qish', 'Kapyushon'],
+  },
+  'zr-141': {
+    name: 'Tik yoqali qavima kurtka',
+    description: 'Tik yoqali yengil qavima kurtka. Yupqa isitgich — palto ostida yoki oraliq mavsumda alohida kurtka sifatida qulay.',
+    details: ['Mavsum: kuz, iliq qish'],
+  },
+  'zr-142': {
+    name: 'Nishonli charm kurtka',
+    description: 'Koʻkragida nishonli, qaytarma yoqali silliq ekocharmdan kurtka. Toʻgʻri bichim, zamokli.',
+    details: ['Material: ekocharm', 'Zamok bilan'],
+  },
+  'zr-143': {
+    name: 'Choʻntakli koʻylak-kurtka',
+    description: 'Koʻkragida ustki choʻntakli zich koʻylak-kurtka. Isitilgan, sviter va futbolka ustidan kiyiladi.',
+    details: ['Choʻntaklar: koʻkrakda ustki'],
+  },
+  'zr-144': {
+    name: 'Tugmali jun kurtka',
+    description: 'Tik yoqali, tugmali jun matodan yumshoq kurtka. Erkin bichim, issiq va yengil.',
+    details: ['Mato: jun', 'Tugmali'],
+  },
+  'zr-145': {
+    name: 'Jun jaket',
+    description: 'Qaytarma yoqali, tugmali zich jun matodan jaket. Xuddi shu matodagi shim bilan kostyum boʻladi.',
+    details: ['Mato: jun', 'Komplekt shimi — alohida'],
+  },
+  'zr-146': {
+    name: 'Jun shim',
+    description: 'Zich jun matodan toʻgʻri bichimli shim — jun jaketga juft.',
+    details: ['Mato: jun', 'Bichim: toʻgʻri'],
+  },
+  'zr-147': {
+    name: 'Isitilgan shim',
+    description: 'Sovuq havo uchun isitilgan astarli toʻgʻri bichimli issiq shim.',
+    details: ['Astar: isitilgan', 'Bichim: toʻgʻri'],
+  },
+  'zr-148': {
+    name: 'Tik yoqali qavima nimcha',
+    description: 'Tik yoqali, zamokli isitilgan qavima nimcha. Yorqin va bazaviy ranglar.',
+    details: ['Yoqa: tik'],
+  },
+  'zr-149': {
+    name: 'Isitilgan nimcha',
+    description: 'Tik yoqali, zamokli qavima nimcha. Sviter ustidan yoki palto ostidan issiq qatlam.',
+    details: ['Yoqa: tik'],
+  },
+  'zr-150': {
+    name: 'Trikotaj yarim zamokli jemper',
+    description: 'Kalta zamokli yoqali trikotaj jemper. Zich toʻqima, beshta rang tanlovi.',
+    details: ['Zamok: yarim zamok'],
+  },
+  'zr-151': {
+    name: 'Chiziqli yarim zamokli jemper',
+    description: 'Qaytarma yoqali va kalta zamokli keng chiziqli toʻqilgan jemper.',
+    details: ['Naqsh: chiziq', 'Zamok: yarim zamok'],
+  },
+  'zr-152': {
+    name: 'Zamokli trikotaj jemper',
+    description: 'Yumshoq trikotajdan tik yoqali zamokli jemper. Futbolka yoki koʻylak ustidan kiyiladi.',
+    details: ['Zamok bilan'],
+  },
+  'zr-153': {
+    name: 'Ikki plankali zamokli jemper',
+    description: 'Kontrast plankali zich toʻqilgan zamokli jemper. Koʻylak va galstuk bilan chiroyli koʻrinadi.',
+    details: ['Zamok bilan'],
+  },
+  'zr-154': {
+    name: 'Toʻqilgan zamokli jemper',
+    description: 'Tik yoqali, zamokli chiziqli toʻqimadan issiq jemper.',
+    details: ['Toʻqima: chiziqli', 'Zamok bilan'],
+  },
+  'zr-155': {
+    name: 'Tugmali kardigan',
+    description: 'Klassik tugmali toʻqilgan kardigan. Koʻylak yoki futbolka bilan kiyiladi.',
+    details: ['Tugmali'],
   },
 };
