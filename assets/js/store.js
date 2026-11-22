@@ -1,9 +1,10 @@
 // Shared browser utilities: formatting, images, cart persistence and validation.
 import { PRODUCTS, STORE, getProduct, stockOf, sizesOf } from '/data/products.js';
+import { t } from '/assets/js/i18n.js';
 
 const CART_KEY = 'zarda_cart_v1';
 
-export const money = (n) => new Intl.NumberFormat('ru-RU').format(Math.round(n)).replace(/ /g, ' ') + ' сум';
+export const money = (n) => new Intl.NumberFormat('ru-RU').format(Math.round(n)).replace(/ /g, ' ') + ' ' + t('currency');
 
 const ESC = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
 export const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ESC[c]);
@@ -67,16 +68,16 @@ export const cartTotal = () => cartLines().reduce((s, l) => s + l.lineTotal, 0);
 /** Returns { ok, added, reason } */
 export function addToCart(id, size, color, qty = 1) {
   const p = getProduct(id);
-  if (!p || p.available === false) return { ok: false, reason: 'Товар недоступен' };
-  if (!sizesOf(p).includes(String(size))) return { ok: false, reason: 'Выберите размер' };
+  if (!p || p.available === false) return { ok: false, reason: t('rUnavailable') };
+  if (!sizesOf(p).includes(String(size))) return { ok: false, reason: t('rChooseSize') };
   const stock = stockOf(p, size);
-  if (stock < 1) return { ok: false, reason: 'Этого размера нет в наличии' };
+  if (stock < 1) return { ok: false, reason: t('rSizeOut') };
   const max = Math.min(stock, STORE.maxQtyPerItem);
   const items = getCart().map((l) => ({ ...l }));
   const line = items.find((l) => l.id === id && l.size === String(size) && l.color === color);
   const current = line ? line.qty : 0;
   const added = Math.max(0, Math.min(qty, max - current));
-  if (added === 0) return { ok: false, reason: `Максимум ${max} шт. этого размера` };
+  if (added === 0) return { ok: false, reason: t('rMax', { n: max }) };
   if (line) line.qty += added; else items.push({ id, size: String(size), color, qty: added });
   write(sanitize(items));
   return { ok: true, added, limited: added < qty };

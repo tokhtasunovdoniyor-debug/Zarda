@@ -2,6 +2,7 @@
 // Scoped to a root element (no global IDs), so two pickers can exist on one page.
 import { STORE, sizesOf, stockOf, isInStock } from '/data/products.js';
 import { esc, addToCart } from '/assets/js/store.js';
+import { t, colorName } from '/assets/js/i18n.js';
 
 export function newSelection(p) {
   const sizes = sizesOf(p);
@@ -15,22 +16,22 @@ export function pickerHTML(p, sel, { compact = false } = {}) {
   const numeric = sizes.every((s) => /^\d+$/.test(s));
   return `
   <div class="opt-group">
-    <div class="opt-label"><span>Цвет</span><span data-role="colorName">${esc(sel.color || '')}</span></div>
-    <div class="colors" role="radiogroup" aria-label="Цвет">
-      ${p.colors.map((c) => `<button type="button" class="color" role="radio" aria-checked="${c.name === sel.color}" aria-label="${esc(c.name)}" data-color="${esc(c.name)}"><i style="background:${esc(c.hex)}"></i></button>`).join('')}
+    <div class="opt-label"><span>${t('color')}</span><span data-role="colorName">${esc(colorName(sel.color || ''))}</span></div>
+    <div class="colors" role="radiogroup" aria-label="${t('color')}">
+      ${p.colors.map((c) => `<button type="button" class="color" role="radio" aria-checked="${c.name === sel.color}" aria-label="${esc(colorName(c.name))}" data-color="${esc(c.name)}"><i style="background:${esc(c.hex)}"></i></button>`).join('')}
     </div>
   </div>
   <div class="opt-group">
-    <div class="opt-label"><span>Размер</span><span>${compact ? '' : numeric ? 'Размер по талии' : 'Международный'}</span></div>
-    <div class="sizes" role="radiogroup" aria-label="Размер">
-      ${sizes.map((s) => { const out = stockOf(p, s) < 1; return `<button type="button" class="size" role="radio" aria-checked="${s === sel.size}" data-size="${esc(s)}"${out ? ` disabled aria-label="${esc(s)} — нет в наличии"` : ''}>${esc(s)}</button>`; }).join('')}
+    <div class="opt-label"><span>${t('size')}</span><span>${compact ? '' : numeric ? t('sizeWaist') : t('sizeIntl')}</span></div>
+    <div class="sizes" role="radiogroup" aria-label="${t('size')}">
+      ${sizes.map((s) => { const out = stockOf(p, s) < 1; return `<button type="button" class="size" role="radio" aria-checked="${s === sel.size}" data-size="${esc(s)}"${out ? ` disabled aria-label="${esc(t('sizeOut', { s }))}"` : ''}>${esc(s)}</button>`; }).join('')}
     </div>
   </div>
   <div class="buy-row">
-    <div class="qty" role="group" aria-label="Количество">
-      <button type="button" data-role="minus" aria-label="Уменьшить количество">−</button><output data-role="qty" aria-live="polite">1</output><button type="button" data-role="plus" aria-label="Увеличить количество">+</button>
+    <div class="qty" role="group" aria-label="${t('qty')}">
+      <button type="button" data-role="minus" aria-label="${t('qtyDec')}">−</button><output data-role="qty" aria-live="polite">1</output><button type="button" data-role="plus" aria-label="${t('qtyInc')}">+</button>
     </div>
-    <button class="btn" type="button" data-role="add" ${orderable ? '' : 'disabled'}>${orderable ? 'Добавить в корзину' : 'Нет в наличии'}</button>
+    <button class="btn" type="button" data-role="add" ${orderable ? '' : 'disabled'}>${orderable ? t('addToCart') : t('out')}</button>
   </div>
   <p class="stock-note" data-role="note" aria-live="polite"></p>`;
 }
@@ -51,18 +52,18 @@ export function bindPicker(root, p, sel, { onAdd, onError } = {}) {
     q('plus').disabled = sel.qty >= maxQty();
     const note = q('note');
     note.className = 'stock-note';
-    if (!orderable) { note.textContent = 'Товара сейчас нет в наличии.'; return; }
+    if (!orderable) { note.textContent = t('noteOut'); return; }
     if (!sel.size) { note.textContent = ''; return; }
     const st = stockOf(p, sel.size);
-    if (st <= 2) { note.textContent = `Осталось ${st} шт. размера ${sel.size}`; note.classList.add('warn'); }
-    else { note.textContent = p.preorder ? `Под заказ · ${STORE.preorderTime}` : 'В наличии'; note.classList.add('ok'); }
+    if (st <= 2) { note.textContent = t('noteLeft', { n: st, s: sel.size }); note.classList.add('warn'); }
+    else { note.textContent = p.preorder ? t('notePre', { t: t('preorderTime') }) : t('inStock'); note.classList.add('ok'); }
   }
 
   root.querySelector('.colors').addEventListener('click', (e) => {
     const b = e.target.closest('[data-color]'); if (!b) return;
     sel.color = b.dataset.color;
     root.querySelectorAll('.color').forEach((x) => x.setAttribute('aria-checked', String(x === b)));
-    q('colorName').textContent = sel.color;
+    q('colorName').textContent = colorName(sel.color);
     root.dispatchEvent(new CustomEvent('picker:color', { detail: sel.color }));
   });
   root.querySelector('.sizes').addEventListener('click', (e) => {
@@ -78,7 +79,7 @@ export function bindPicker(root, p, sel, { onAdd, onError } = {}) {
   function add() {
     if (!orderable) return false;
     if (!sel.size) {
-      const note = q('note'); note.className = 'stock-note warn'; note.textContent = 'Пожалуйста, выберите размер.';
+      const note = q('note'); note.className = 'stock-note warn'; note.textContent = t('pickSize');
       const first = root.querySelector('.size:not(:disabled)');
       first?.scrollIntoView({ block: 'center', behavior: 'smooth' });
       first?.focus({ preventScroll: true });
