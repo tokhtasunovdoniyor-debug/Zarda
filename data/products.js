@@ -14,6 +14,8 @@
 //    (`preorder: true`), so every listed size gets the same number, which is
 //    only used as the maximum quantity per order. Use 0 to switch a size off.
 //  • `images`: first image is the main one. Files live in /images/products/.
+//  • `winter: true` puts a product in the «Зима» collection: the winter showcase on the home page,
+//    the «Зима» chip in the catalog (/catalog?category=winter) and higher in the default catalog order.
 //  • After editing, commit to GitHub — Vercel redeploys automatically.
 //
 //  Products, prices, sizes and photos are taken from the Telegram channel
@@ -335,7 +337,7 @@ export const PRODUCTS = [
     images: img('zr-132', 5),
     colors: [NAVY, BEIGE, BLACK, GREY, BROWN],
     stock: sizes(...S_3XL),
-    available: true, preorder: true, featured: true, bestseller: true, isNew: false,
+    available: true, preorder: true, winter: true, featured: true, bestseller: true, isNew: false,
   },
   {
     id: 'zr-133',
@@ -347,7 +349,7 @@ export const PRODUCTS = [
     images: img('zr-133', 5),
     colors: [BLACK, GREY, { name: 'Зелёный', hex: '#2f6b45' }, { name: 'Горчичный', hex: '#b8862f' }, { name: 'Хаки', hex: '#7a6a3e' }],
     stock: sizes(...S_3XL),
-    available: true, preorder: true, featured: true, bestseller: false, isNew: false,
+    available: true, preorder: true, winter: true, featured: true, bestseller: false, isNew: false,
   },
   {
     id: 'zr-134',
@@ -359,7 +361,7 @@ export const PRODUCTS = [
     images: img('zr-134', 8),
     colors: [BLACK, { name: 'Светло-серый', hex: '#c9c9c6' }],
     stock: sizes(...S_3XL),
-    available: true, preorder: true, featured: false, bestseller: true, isNew: false,
+    available: true, preorder: true, winter: true, featured: false, bestseller: true, isNew: false,
   },
   {
     id: 'zr-135',
@@ -371,7 +373,7 @@ export const PRODUCTS = [
     images: img('zr-135', 4),
     colors: [BLACK],
     stock: sizes(...S_3XL),
-    available: true, preorder: true, featured: false, bestseller: false, isNew: false,
+    available: true, preorder: true, winter: true, featured: false, bestseller: false, isNew: false,
   },
   {
     id: 'zr-136',
@@ -383,7 +385,7 @@ export const PRODUCTS = [
     images: img('zr-136', 3),
     colors: [GREY, BLACK],
     stock: sizes(...S_3XL),
-    available: true, preorder: true, featured: false, bestseller: false, isNew: false,
+    available: true, preorder: true, winter: true, featured: false, bestseller: false, isNew: false,
   },
   {
     id: 'zr-137',
@@ -395,7 +397,7 @@ export const PRODUCTS = [
     images: img('zr-137', 4),
     colors: [BROWN, BLACK],
     stock: sizes(...S_3XL),
-    available: true, preorder: true, featured: false, bestseller: false, isNew: false,
+    available: true, preorder: true, winter: true, featured: false, bestseller: false, isNew: false,
   },
   {
     id: 'zr-138',
@@ -407,7 +409,7 @@ export const PRODUCTS = [
     images: img('zr-138', 4),
     colors: [NAVY],
     stock: sizes(...S_3XL),
-    available: true, preorder: true, featured: false, bestseller: false, isNew: false,
+    available: true, preorder: true, winter: true, featured: false, bestseller: false, isNew: false,
   },
   {
     id: 'zr-139',
@@ -419,7 +421,7 @@ export const PRODUCTS = [
     images: img('zr-139', 4),
     colors: [BLACK],
     stock: sizes(...S_3XL),
-    available: true, preorder: true, featured: false, bestseller: false, isNew: false,
+    available: true, preorder: true, winter: true, featured: false, bestseller: false, isNew: false,
   },
   {
     id: 'zr-140',
@@ -431,7 +433,7 @@ export const PRODUCTS = [
     images: img('zr-140', 2),
     colors: [NAVY],
     stock: sizes(...S_3XL),
-    available: true, preorder: true, featured: false, bestseller: false, isNew: false,
+    available: true, preorder: true, winter: true, featured: false, bestseller: false, isNew: false,
   },
   {
     id: 'zr-141',
@@ -443,7 +445,7 @@ export const PRODUCTS = [
     images: img('zr-141', 5),
     colors: [GREY, { name: 'Белый', hex: '#f4f3ef' }, BLACK],
     stock: sizes(...S_3XL),
-    available: true, preorder: true, featured: false, bestseller: false, isNew: false,
+    available: true, preorder: true, winter: true, featured: false, bestseller: false, isNew: false,
   },
   {
     id: 'zr-142',
@@ -455,7 +457,7 @@ export const PRODUCTS = [
     images: img('zr-142', 6),
     colors: [{ name: 'Мятный', hex: '#9fc4b0' }, BLACK, { name: 'Белый', hex: '#f4f3ef' }],
     stock: sizes(...S_3XL),
-    available: true, preorder: true, featured: false, bestseller: false, isNew: false,
+    available: true, preorder: true, winter: true, featured: false, bestseller: false, isNew: false,
   },
   {
     id: 'zr-143',
@@ -467,7 +469,7 @@ export const PRODUCTS = [
     images: img('zr-143', 5),
     colors: [BEIGE, GREY, BROWN],
     stock: sizes(...S_3XL),
-    available: true, preorder: true, featured: false, bestseller: false, isNew: false,
+    available: true, preorder: true, winter: true, featured: false, bestseller: false, isNew: false,
   },
   {
     id: 'zr-144',
@@ -479,7 +481,7 @@ export const PRODUCTS = [
     images: img('zr-144', 8),
     colors: [BEIGE, BLACK],
     stock: sizes(...S_3XL),
-    available: true, preorder: true, featured: false, bestseller: false, isNew: false,
+    available: true, preorder: true, winter: true, featured: false, bestseller: false, isNew: false,
   },
   {
     id: 'zr-145',
@@ -491,7 +493,7 @@ export const PRODUCTS = [
     images: img('zr-145', 5),
     colors: [NAVY, BROWN],
     stock: sizes(...S_3XL),
-    available: true, preorder: true, featured: false, bestseller: false, isNew: false,
+    available: true, preorder: true, winter: true, featured: false, bestseller: false, isNew: false,
   },
   {
     id: 'zr-146',
@@ -503,7 +505,7 @@ export const PRODUCTS = [
     images: img('zr-146', 3),
     colors: [NAVY, BROWN],
     stock: sizes(...S_3XL),
-    available: true, preorder: true, featured: false, bestseller: false, isNew: false,
+    available: true, preorder: true, winter: true, featured: false, bestseller: false, isNew: false,
   },
   {
     id: 'zr-147',
@@ -515,7 +517,7 @@ export const PRODUCTS = [
     images: img('zr-147', 4),
     colors: [NAVY, BEIGE, GREY],
     stock: sizes(...S_3XL),
-    available: true, preorder: true, featured: false, bestseller: false, isNew: false,
+    available: true, preorder: true, winter: true, featured: false, bestseller: false, isNew: false,
   },
   {
     id: 'zr-148',
@@ -527,7 +529,7 @@ export const PRODUCTS = [
     images: img('zr-148', 5),
     colors: [NAVY, { name: 'Зелёный', hex: '#2f6b45' }, { name: 'Белый', hex: '#f4f3ef' }, BLACK, { name: 'Красный', hex: '#9c2b2b' }],
     stock: sizes(...S_3XL),
-    available: true, preorder: true, featured: false, bestseller: false, isNew: false,
+    available: true, preorder: true, winter: true, featured: false, bestseller: false, isNew: false,
   },
   {
     id: 'zr-149',
@@ -539,7 +541,7 @@ export const PRODUCTS = [
     images: img('zr-149', 5),
     colors: [NAVY, { name: 'Светло-серый', hex: '#c9c9c6' }, BROWN],
     stock: sizes(...S_3XL),
-    available: true, preorder: true, featured: false, bestseller: false, isNew: false,
+    available: true, preorder: true, winter: true, featured: false, bestseller: false, isNew: false,
   },
   {
     id: 'zr-150',
@@ -551,7 +553,7 @@ export const PRODUCTS = [
     images: img('zr-150', 6),
     colors: [NAVY, BLACK, GREY, BEIGE, { name: 'Зелёный', hex: '#2f6b45' }],
     stock: sizes(...S_3XL),
-    available: true, preorder: true, featured: false, bestseller: false, isNew: false,
+    available: true, preorder: true, winter: true, featured: false, bestseller: false, isNew: false,
   },
   {
     id: 'zr-151',
@@ -563,7 +565,7 @@ export const PRODUCTS = [
     images: img('zr-151', 6),
     colors: [BROWN, BLACK, { name: 'Зелёный', hex: '#2f6b45' }, { name: 'Белый', hex: '#f4f3ef' }],
     stock: sizes(...S_3XL),
-    available: true, preorder: true, featured: false, bestseller: false, isNew: false,
+    available: true, preorder: true, winter: true, featured: false, bestseller: false, isNew: false,
   },
   {
     id: 'zr-152',
@@ -575,7 +577,7 @@ export const PRODUCTS = [
     images: img('zr-152', 5),
     colors: [MILK, NAVY, BROWN, { name: 'Зелёный', hex: '#2f6b45' }, BLACK],
     stock: sizes(...S_3XL),
-    available: true, preorder: true, featured: false, bestseller: false, isNew: false,
+    available: true, preorder: true, winter: true, featured: false, bestseller: false, isNew: false,
   },
   {
     id: 'zr-153',
@@ -587,7 +589,7 @@ export const PRODUCTS = [
     images: img('zr-153', 5),
     colors: [BLACK, BROWN],
     stock: sizes(...S_3XL),
-    available: true, preorder: true, featured: false, bestseller: false, isNew: false,
+    available: true, preorder: true, winter: true, featured: false, bestseller: false, isNew: false,
   },
   {
     id: 'zr-154',
@@ -599,7 +601,7 @@ export const PRODUCTS = [
     images: img('zr-154', 6),
     colors: [BROWN, BLACK, MILK],
     stock: sizes(...S_3XL),
-    available: true, preorder: true, featured: false, bestseller: false, isNew: false,
+    available: true, preorder: true, winter: true, featured: false, bestseller: false, isNew: false,
   },
   {
     id: 'zr-155',
@@ -611,7 +613,7 @@ export const PRODUCTS = [
     images: img('zr-155', 3),
     colors: [NAVY, BLACK],
     stock: sizes(...S_3XL),
-    available: true, preorder: true, featured: false, bestseller: false, isNew: false,
+    available: true, preorder: true, winter: true, featured: false, bestseller: false, isNew: false,
   },
   // ---- Из видео в канале (кадры из видео) -----------------------------------
   {
