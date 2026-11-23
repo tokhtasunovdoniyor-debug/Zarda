@@ -43,6 +43,8 @@ export async function initMotion() {
   run(headings);
   run(cards);
   run(parallax);
+  run(winter);
+  run(steps);
   run(magnetic);
   run(cartBump);
   // Images change section heights as they load.
@@ -57,7 +59,7 @@ function smoothScroll(gsap, ScrollTrigger, _S, Lenis) {
     lerp: 0.1,
     smoothWheel: true,
     // Let menus, the cart, filters and photo viewers scroll natively.
-    prevent: (node) => !!node.closest?.('.drawer, .mnav, .sheet, .qv, .viewer, .cat-rail, .cats, .gallery-track, [data-lenis-prevent]'),
+    prevent: (node) => !!node.closest?.('.drawer, .mnav, .sheet, .qv, .viewer, .cat-rail, .cats, .gallery-track, .winter-rail, [data-lenis-prevent]'),
   });
   window.__lenis = lenis;
   lenis.on('scroll', ScrollTrigger.update);
@@ -125,11 +127,11 @@ function marquee(gsap) {
 // ---- headings rise out of a mask as they scroll into view ------------------------
 function headings(gsap, ScrollTrigger, SplitText) {
   if (!SplitText) return;
-  document.querySelectorAll('.section-head h2, .split-copy h2, .story-copy h2, .page-head h1, .promo-title, .ftr-claim').forEach((h) => {
+  document.querySelectorAll('.section-head h2, .split-copy h2, .story-copy h2, .page-head h1, .promo-title, .ftr-claim, .winter-title, .tg-title').forEach((h) => {
     const split = new SplitText(h, { type: 'lines', mask: 'lines' });
     gsap.from(split.lines, { yPercent: 110, duration: 1.2, ease: 'expo.out', stagger: 0.08, scrollTrigger: { trigger: h, start: 'top 88%', once: true } });
   });
-  document.querySelectorAll('.section-head .eyebrow, .split-copy .eyebrow, .story-copy .eyebrow, .page-head .eyebrow, .section-head .arrow-link').forEach((e) => {
+  document.querySelectorAll('.section-head .eyebrow, .split-copy .eyebrow, .story-copy .eyebrow, .page-head .eyebrow, .section-head .arrow-link, .winter .eyebrow, .winter-side, .tg-band .eyebrow, .tg-text, .tg-actions').forEach((e) => {
     gsap.from(e, { autoAlpha: 0, y: 14, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: e, start: 'top 90%', once: true } });
   });
 }
@@ -159,10 +161,88 @@ function parallax(gsap) {
   });
 }
 
+// ---- winter showcase: light snowfall; on desktop the section pins and the rail slides sideways ----
+function winter(gsap, ScrollTrigger) {
+  const sec = document.querySelector('.winter');
+  if (!sec || sec.hidden) return;
+  snow(sec);
+  const rail = sec.querySelector('.winter-rail');
+  const bar = document.getElementById('winterBar');
+  const cardsIn = rail.querySelectorAll('.w-card');
+  gsap.fromTo(cardsIn, { autoAlpha: 0, x: 80 }, { autoAlpha: 1, x: 0, duration: 1.1, ease: 'expo.out', stagger: 0.06, scrollTrigger: { trigger: rail, start: 'top 85%', once: true } });
+
+  const mm = gsap.matchMedia();
+  mm.add('(min-width: 1024px)', () => {
+    sec.classList.add('is-pinned');
+    rail.scrollLeft = 0;
+    // How far the rail has to travel so its last card ends at the right gutter.
+    const dist = () => {
+      const last = rail.lastElementChild;
+      const pad = parseFloat(getComputedStyle(rail).paddingRight) || 0;
+      return last ? Math.max(0, last.offsetLeft + last.offsetWidth + pad - rail.clientWidth) : 0;
+    };
+    const tw = gsap.to(rail, {
+      x: () => -dist(), ease: 'none',
+      scrollTrigger: {
+        trigger: sec, start: 'top top', end: () => `+=${dist()}`, pin: true, scrub: 0.7, invalidateOnRefresh: true, anticipatePin: 1, refreshPriority: 1,
+        onUpdate: (st) => { if (bar) bar.style.transform = `scaleX(${Math.max(0.04, st.progress)})`; },
+      },
+    });
+    // Big title drifts slower than the cards: a little depth.
+    gsap.to(sec.querySelector('.winter-head'), { x: () => -Math.min(120, dist() * 0.06), ease: 'none', scrollTrigger: { trigger: sec, start: 'top top', end: () => `+=${dist()}`, scrub: 0.7, invalidateOnRefresh: true } });
+    return () => { sec.classList.remove('is-pinned'); tw.scrollTrigger?.kill(); gsap.set(rail, { clearProps: 'x' }); };
+  });
+}
+
+function snow(sec) {
+  const c = document.createElement('canvas');
+  c.className = 'winter-snow';
+  c.setAttribute('aria-hidden', 'true');
+  sec.prepend(c);
+  const ctx = c.getContext('2d');
+  if (!ctx) return;
+  const n = window.innerWidth < 768 ? 45 : 110;
+  let w = 0, h = 0, on = false, raf = 0;
+  const size = () => {
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    w = sec.clientWidth; h = sec.clientHeight;
+    c.width = Math.round(w * dpr); c.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  };
+  const make = (y) => ({ x: Math.random() * w, y: y ?? Math.random() * h, r: 0.5 + Math.random() * 1.7, s: 0.2 + Math.random() * 0.65, d: Math.random() * 6.28, o: 0.18 + Math.random() * 0.5 });
+  size();
+  const flakes = Array.from({ length: n }, () => make());
+  const tick = (time) => {
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = '#fff';
+    for (const f of flakes) {
+      f.y += f.s; f.x += Math.sin(time / 1800 + f.d) * 0.28;
+      if (f.y > h + 4) Object.assign(f, make(-4));
+      ctx.globalAlpha = f.o;
+      ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, 6.283); ctx.fill();
+    }
+    if (on) raf = requestAnimationFrame(tick);
+  };
+  // Only animate while the section is on screen.
+  new IntersectionObserver(([e]) => {
+    if (e.isIntersecting && !on) { on = true; raf = requestAnimationFrame(tick); }
+    else if (!e.isIntersecting) { on = false; cancelAnimationFrame(raf); }
+  }).observe(sec);
+  if (window.ResizeObserver) new ResizeObserver(size).observe(sec);
+}
+
+// ---- «how to order»: big numbers rise one after another ---------------------------
+function steps(gsap) {
+  const list = document.querySelector('.steps-list');
+  if (!list) return;
+  gsap.from(list.querySelectorAll('li'), { autoAlpha: 0, y: 40, duration: 1, ease: 'expo.out', stagger: 0.12, scrollTrigger: { trigger: list, start: 'top 85%', once: true } });
+  gsap.from(list.querySelectorAll('.step-n'), { yPercent: 60, duration: 1.4, ease: 'expo.out', stagger: 0.12, scrollTrigger: { trigger: list, start: 'top 85%', once: true } });
+}
+
 // ---- magnetic buttons on desktop (React Bits «magnet» idea) ----------------------
 function magnetic(gsap) {
   if (!finePointer) return;
-  document.querySelectorAll('.hero .btn, .split-copy .btn, .ftr-top .btn, .hero-badge').forEach((el) => {
+  document.querySelectorAll('.hero .btn, .split-copy .btn, .ftr-top .btn, .hero-badge, .winter-side .btn, .tg-actions .btn, .steps-cta .btn').forEach((el) => {
     const xTo = gsap.quickTo(el, 'x', { duration: 0.5, ease: 'power3.out' });
     const yTo = gsap.quickTo(el, 'y', { duration: 0.5, ease: 'power3.out' });
     el.addEventListener('pointermove', (e) => {

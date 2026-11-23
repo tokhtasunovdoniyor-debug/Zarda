@@ -36,6 +36,13 @@ const ruItems = (n) => {
   return 'товаров';
 };
 
+const ruModels = (n) => {
+  const m10 = n % 10, m100 = n % 100;
+  if (m10 === 1 && m100 !== 11) return 'модель';
+  if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return 'модели';
+  return 'моделей';
+};
+
 const D = {
   ru: {
     skip: 'Перейти к содержимому',
@@ -78,6 +85,8 @@ const D = {
     delPayText: 'Мы доставляем по Ташкенту и во все регионы Узбекистана. После оформления менеджер свяжется с вами, подтвердит наличие, рассчитает доставку и согласует оплату.',
     marquee: 'Новая коллекция осень — зима · Под заказ 5–7 рабочих дней · Доставка по всему Узбекистану · ZARDA',
     badgeText: 'НОВАЯ КОЛЛЕКЦИЯ',
+    winterChip: 'Зима', winterTitle: 'Зимняя коллекция', winterModels: ({ n }) => `${n} ${ruModels(n)}`,
+    winterDrag: 'Листайте', winterAll: 'Вся зимняя коллекция',
     videoTitle: 'Видео', videoText: 'Этот товар показан на видео в нашем Telegram-канале.', videoLink: 'Смотреть видео',
     sku: 'Артикул', sampleNote: 'Демонстрационный товар: название, фото и цена являются примером.',
     // catalog
@@ -132,6 +141,8 @@ const D = {
     delPayText: 'Toshkent va Oʻzbekistonning barcha viloyatlariga yetkazib beramiz. Buyurtmadan soʻng menejer siz bilan bogʻlanadi, mavjudligini tasdiqlaydi, yetkazib berish narxini hisoblaydi va toʻlovni kelishib oladi.',
     marquee: 'Kuz — qish kolleksiyasi · Buyurtma asosida 5–7 ish kuni · Oʻzbekiston boʻylab yetkazib berish · ZARDA',
     badgeText: 'YANGI KOLLEKSIYA',
+    winterChip: 'Qish', winterTitle: 'Qishki kolleksiya', winterModels: ({ n }) => `${n} ta model`,
+    winterDrag: 'Suring', winterAll: 'Butun qishki kolleksiya',
     videoTitle: 'Video', videoText: 'Bu mahsulot Telegram-kanalimizdagi videoda koʻrsatilgan.', videoLink: 'Videoni koʻrish',
     sku: 'Artikul', sampleNote: 'Namuna mahsulot: nomi, surati va narxi misol sifatida berilgan.',
     all: 'Hammasi', items: (v) => `${v.n} ta mahsulot`, filters: 'Filtrlar', filtersN: 'Filtrlar ({n})',
