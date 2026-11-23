@@ -339,4 +339,9 @@ export const UZ_PRODUCTS = {
     description: 'Klassik tugmali toʻqilgan kardigan. Koʻylak yoki futbolka bilan kiyiladi.',
     details: ['Tugmali'],
   },
+  'zr-156': {
+    name: 'Oversayz toʻqilgan kardigan',
+    description: 'Har kungi obrazlar uchun minimalistik dizayndagi toʻqilgan kardigan. Erkin oversayz bichim, yumshoq va badanga yoqimli toʻqima, klassik dumaloq yoqa va tugmali. Jinsi, klassik shimlar va oddiy futbolkalar bilan oson uygʻunlashadi.',
+    details: ['Tarkibi: 70% akril, 30% jun', 'Bichim: erkin, oversayz', 'Yoqa: dumaloq', 'Tugmali', 'Yeng uchi va pastki qismi: elastik rezinka'],
+  },
 };
