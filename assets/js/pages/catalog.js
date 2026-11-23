@@ -31,7 +31,9 @@ const state = {
   stock: params.get('stock') === '1',
 };
 const mobile = () => window.matchMedia('(max-width: 767px)').matches;
-if (state.category && !CATEGORIES.some((c) => c.id === state.category)) state.category = '';
+// «winter» is a collection, not a category: the 24 winter models (winter: true in data/products.js).
+const WINTER = 'winter';
+if (state.category && state.category !== WINTER && !CATEGORIES.some((c) => c.id === state.category)) state.category = '';
 
 const norm = (s) => String(s).toLowerCase().replace(/ё/g, 'е').replace(/[ʻʼ'‘’`]/g, '').trim();
 
@@ -54,7 +56,7 @@ function filtered() {
   const min = Number(state.min) || 0;
   const max = Number(state.max) || Infinity;
   let list = visible.filter((p) => {
-    if (state.category && p.category !== state.category) return false;
+    if (state.category === WINTER ? !p.winter : (state.category && p.category !== state.category)) return false;
     if (q) {
       // Search both languages, so a query typed in Russian or Uzbek finds the item.
       const c = CATEGORIES.find((x) => x.id === p.category);
@@ -68,7 +70,8 @@ function filtered() {
     return true;
   });
   const by = {
-    featured: (a, b) => (b.featured - a.featured) || (b.isNew - a.isNew),
+    // Default order: featured first, then the winter collection (in season now), then new arrivals.
+    featured: (a, b) => (b.featured - a.featured) || (!!b.winter - !!a.winter) || (b.isNew - a.isNew),
     new: (a, b) => (b.isNew - a.isNew) || (b.featured - a.featured),
     popular: (a, b) => (b.bestseller - a.bestseller) || (b.featured - a.featured),
     'price-asc': (a, b) => a.price - b.price,
@@ -79,9 +82,10 @@ function filtered() {
 
 function render() {
   const cat = CATEGORIES.find((c) => c.id === state.category);
-  $('catTitle').textContent = cat ? catName(cat) : t('catalog');
-  document.title = `${cat ? catName(cat) : t('catalog')} — ZARDA`;
-  $('cats').innerHTML = [{ id: '', label: t('all') }, ...CATEGORIES.filter((c) => visible.some((p) => p.category === c.id)).map((c) => ({ id: c.id, label: catName(c) }))]
+  const title = state.category === WINTER ? t('winterTitle') : cat ? catName(cat) : t('catalog');
+  $('catTitle').textContent = title;
+  document.title = `${title} — ZARDA`;
+  $('cats').innerHTML = [{ id: '', label: t('all') }, ...(visible.some((p) => p.winter) ? [{ id: WINTER, label: `❄ ${t('winterChip')}` }] : []), ...CATEGORIES.filter((c) => visible.some((p) => p.category === c.id)).map((c) => ({ id: c.id, label: catName(c) }))]
     .map((c) => `<button class="chip" type="button" data-cat="${c.id}" aria-pressed="${c.id === state.category}">${esc(c.label)}</button>`).join('');
   $('fSizes').innerHTML = allSizes.map((s) => `<button class="opt" type="button" data-size="${esc(s)}" aria-pressed="${state.sizes.has(s)}">${esc(s)}</button>`).join('');
   $('fColors').innerHTML = allColors.map((c) => `<button class="opt" type="button" data-color="${esc(c.name)}" aria-pressed="${state.colors.has(c.name)}"><i style="background:${esc(c.hex)}"></i>${esc(colorName(c.name))}</button>`).join('');
