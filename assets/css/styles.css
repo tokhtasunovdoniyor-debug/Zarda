@@ -551,3 +551,71 @@ html.lenis, html.lenis body { height: auto; }
 .hero-badge span { font-size: 16px; }
 .cart-n { display: inline-block; }
 #cartBtn { will-change: transform; }
+
+/* ---- home: 4 / 6 / 8 cards so rows are always full -------------------------- */
+#newGrid > .card:nth-child(n+5), #bestGrid > .card:nth-child(n+5) { display: none; }
+@media (min-width: 768px) { #newGrid > .card:nth-child(-n+6), #bestGrid > .card:nth-child(-n+6) { display: block; } }
+@media (min-width: 1200px) { #newGrid > .card:nth-child(-n+8), #bestGrid > .card:nth-child(-n+8) { display: block; } }
+
+/* ---- home: winter showcase (dark, horizontal rail; pinned on desktop by motion.js) ---- */
+.winter { position: relative; background: #0f0e0c; color: #f3eee6; overflow: hidden; margin-top: 56px; }
+@media (min-width: 768px) { .winter { margin-top: 96px; } }
+.winter::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(60% 50% at 85% 0%, rgba(154,107,79,.22), transparent 70%), radial-gradient(50% 60% at 0% 100%, rgba(120,140,160,.14), transparent 70%); }
+.winter-in { position: relative; padding: 56px 0 40px; display: flex; flex-direction: column; gap: 32px; }
+@media (min-width: 1024px) { .winter-in { height: 100svh; min-height: 640px; padding: calc(var(--hdr) + 20px) 0 28px; justify-content: space-between; gap: 24px; } }
+.winter-snow { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.winter-head { position: relative; display: grid; gap: 24px; padding: 0 var(--gutter); max-width: 1560px; width: 100%; margin: 0 auto; }
+@media (min-width: 900px) { .winter-head { grid-template-columns: 1fr minmax(0, 380px); align-items: end; gap: 48px; } }
+.winter .eyebrow { color: rgba(243,238,230,.6); margin-bottom: 14px; }
+.winter-title { font-size: clamp(56px, 11vw, 168px); line-height: .9; letter-spacing: -.02em; }
+.winter-side { display: flex; flex-direction: column; align-items: flex-start; gap: 22px; }
+.winter-side p { margin: 0; color: rgba(243,238,230,.72); max-width: 36ch; }
+.winter-rail { position: relative; display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 0 var(--gutter); scroll-padding: 0 var(--gutter); outline: none; }
+.winter-rail::-webkit-scrollbar { display: none; }
+@media (min-width: 768px) { .winter-rail { gap: 16px; } }
+.w-card { position: relative; flex: none; width: 68vw; max-width: 340px; scroll-snap-align: start; color: inherit; }
+@media (min-width: 768px) { .w-card { width: 34vw; } }
+/* Desktop: card size follows screen height, so title + cards always fit in one screen while pinned. */
+@media (min-width: 1024px) { .winter-title { font-size: clamp(64px, min(8.4vw, 12svh), 150px); } .w-card { width: clamp(200px, calc((100svh - var(--hdr) - 400px) * .75), 380px); } }
+.w-media { position: relative; display: block; aspect-ratio: 3/4; overflow: hidden; background: #1d1b18; }
+.w-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .6s var(--ease), transform 1.4s var(--ease); }
+.w-media img.alt { opacity: 0; }
+@media (hover: hover) { .w-card:hover .w-media img:first-child { transform: scale(1.04); } .w-card:hover .w-media img.alt { opacity: 1; } }
+.w-num { position: absolute; left: 12px; top: 10px; font-family: var(--serif); font-size: 26px; color: #fff; mix-blend-mode: difference; pointer-events: none; }
+.w-info { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-top: 12px; }
+.w-name { font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase; line-height: 1.4; }
+.w-price { font-size: 13px; color: rgba(243,238,230,.66); white-space: nowrap; }
+.w-more { display: flex; }
+.w-more-in { display: flex; flex-direction: column; justify-content: space-between; width: 100%; aspect-ratio: 3/4; padding: 24px; border: 1px solid rgba(243,238,230,.22); transition: background .4s, color .4s; }
+.w-more-in .display { font-size: clamp(28px, 3vw, 40px); line-height: 1.05; }
+.w-more svg { width: 44px; height: 44px; fill: none; stroke: currentColor; stroke-width: 1; align-self: flex-end; }
+@media (hover: hover) { .w-more:hover .w-more-in { background: #f3eee6; color: #0f0e0c; } }
+.winter-foot { display: flex; align-items: center; gap: 20px; padding: 0 var(--gutter); max-width: 1560px; width: 100%; margin: 0 auto; }
+.winter-progress { flex: 1; height: 1px; background: rgba(243,238,230,.18); }
+.winter-progress i { display: block; height: 100%; background: #f3eee6; transform-origin: 0 50%; transform: scaleX(.04); }
+.winter-hint { font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: rgba(243,238,230,.6); }
+/* Desktop with motion: the rail is moved by the page scroll instead of its own scrollbar. */
+html.motion .winter.is-pinned .winter-rail { overflow: visible; scroll-snap-type: none; will-change: transform; }
+
+/* ---- home: how to order ------------------------------------------------------ */
+.steps-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 18px; border-top: 1px solid var(--line); }
+@media (min-width: 1100px) { .steps-list { grid-template-columns: repeat(4, 1fr); } }
+.steps-list li { position: relative; padding: 22px 0 26px; border-bottom: 1px solid var(--line); }
+@media (min-width: 768px) { .steps-list li { padding: 36px 32px 44px 0; } }
+@media (min-width: 1100px) { .steps-list li { border-bottom: 0; padding-right: 36px; } .steps-list li + li { padding-left: 32px; border-left: 1px solid var(--line); } }
+.step-n { display: block; font-family: var(--serif); font-size: clamp(52px, 7vw, 104px); line-height: .9; color: var(--stone); margin-bottom: 14px; transition: color .5s var(--ease); }
+@media (hover: hover) { .steps-list li:hover .step-n { color: var(--clay); } }
+.steps-list h3 { font-size: 12.5px; letter-spacing: .16em; text-transform: uppercase; margin-bottom: 10px; }
+.steps-list p { margin: 0; color: var(--muted); font-size: 13.5px; max-width: 30ch; }
+.steps-cta { margin-top: 36px; }
+
+/* ---- home: Telegram band -------------------------------------------------------- */
+.tg-band { position: relative; overflow: hidden; background: var(--bone); margin-bottom: 56px; }
+@media (min-width: 768px) { .tg-band { margin-bottom: 96px; } }
+.tg-band::before { content: 'ZARDA'; position: absolute; right: -2vw; bottom: -6vw; font-family: var(--serif); font-size: 34vw; line-height: 1; color: rgba(140,127,112,.09); pointer-events: none; white-space: nowrap; }
+.tg-in { position: relative; padding-top: 72px; padding-bottom: 80px; display: flex; flex-direction: column; align-items: flex-start; gap: 20px; }
+@media (min-width: 768px) { .tg-in { padding-top: 120px; padding-bottom: 128px; } }
+.tg-title { font-size: clamp(42px, 7.4vw, 112px); line-height: .98; max-width: 16ch; }
+.tg-title em { font-style: italic; color: var(--clay); }
+.tg-text { margin: 0; max-width: 44ch; color: var(--ink-2); }
+.tg-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
