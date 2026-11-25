@@ -3,7 +3,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "functions": {
-    "api/*.js": { "maxDuration": 15, "includeFiles": "{data,lib}/**" }
+    "api/*.js": { "maxDuration": 60, "includeFiles": "{data,lib}/**" }
   },
   "headers": [
     {
