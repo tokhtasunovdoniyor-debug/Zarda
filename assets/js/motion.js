@@ -2,7 +2,7 @@
 // Loaded after the page has rendered. Everything is optional: if the visitor prefers reduced motion,
 // or the libraries fail to load, the site stays exactly as it is without animation.
 // Library files are self-hosted in /assets/vendor (GSAP 3.13 «standard no-charge» licence, Lenis MIT).
-import { t, lang } from '/assets/js/i18n.js';
+import { t } from '/assets/js/i18n.js';
 
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -46,7 +46,6 @@ export async function initMotion() {
   run(winter);
   run(steps);
   run(pageTransitions);
-  run(cursor);
   run(progress);
   run(footerMark);
   run(flyToCart);
@@ -275,28 +274,6 @@ function pageTransitions(gsap) {
   });
   // Back/forward cache restores the page with the curtain down — lift it.
   window.addEventListener('pageshow', (e) => { if (e.persisted) gsap.set(cover, { yPercent: 100 }); });
-}
-
-// ---- custom cursor (desktop): a small dot; over photos it becomes a «Смотреть» circle ----
-function cursor(gsap) {
-  if (!finePointer) return;
-  const c = document.createElement('div');
-  c.className = 'cursor';
-  c.setAttribute('aria-hidden', 'true');
-  c.innerHTML = `<i></i><span>${lang === 'uz' ? 'Koʻrish' : 'Смотреть'}</span>`;
-  document.body.append(c);
-  const xTo = gsap.quickTo(c, 'x', { duration: 0.35, ease: 'power3' });
-  const yTo = gsap.quickTo(c, 'y', { duration: 0.35, ease: 'power3' });
-  window.addEventListener('pointermove', (e) => { xTo(e.clientX); yTo(e.clientY); c.classList.add('on'); }, { passive: true });
-  document.documentElement.addEventListener('pointerleave', () => c.classList.remove('on'));
-  const VIEW = '.card-media, .w-media, .promo, .cat-img, .split-media, .story-media';
-  const LINK = 'a, button, summary, select, input, textarea, label, [role="radio"]';
-  document.addEventListener('pointerover', (e) => {
-    const inOverlay = e.target.closest('.drawer, .mnav, .qv, .sheet, .viewer');
-    const view = !inOverlay && e.target.closest(VIEW);
-    c.classList.toggle('view', !!view);
-    c.classList.toggle('link', !view && !!e.target.closest(LINK));
-  });
 }
 
 // ---- thin progress line under the header -----------------------------------------
