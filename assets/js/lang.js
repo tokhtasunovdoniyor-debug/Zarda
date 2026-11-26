@@ -6,7 +6,12 @@
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       document.documentElement.classList.add('motion-pending');
       // Came here through a link on the site: lift the «ZARDA» curtain (motion.js lowered it on the previous page).
-      if (sessionStorage.getItem('zarda_pt')) { sessionStorage.removeItem('zarda_pt'); document.documentElement.classList.add('pt-in'); }
+      if (sessionStorage.getItem('zarda_pt')) {
+        sessionStorage.removeItem('zarda_pt');
+        document.documentElement.classList.add('pt-in');
+        // Safety: never leave the curtain up if the browser skips the CSS animation.
+        setTimeout(function () { document.documentElement.classList.remove('pt-in'); }, 1600);
+      }
     }
   } catch (e) { /* ignore */ }
   try {
