@@ -627,16 +627,6 @@ html.motion .winter.is-pinned .winter-rail { overflow: visible; scroll-snap-type
 .pt-cover span { display: block; }
 html.pt-in body::after { content: 'ZARDA'; animation: ptLift .8s cubic-bezier(.7, 0, .2, 1) .12s forwards; }
 @keyframes ptLift { to { transform: translateY(-100%); } }
-/* custom cursor (desktop only; the system cursor stays) */
-.cursor { position: fixed; left: 0; top: 0; z-index: 250; pointer-events: none; opacity: 0; transition: opacity .3s; mix-blend-mode: difference; }
-.cursor.on { opacity: 1; }
-.cursor i { position: absolute; left: -5px; top: -5px; width: 10px; height: 10px; border-radius: 50%; background: #fff; transition: transform .45s var(--ease), background .3s; }
-.cursor.link i { transform: scale(3.4); background: rgba(255,255,255,.5); }
-.cursor.view { mix-blend-mode: normal; }
-.cursor.view i { transform: scale(9.6); background: rgba(15,14,12,.86); }
-.cursor span { position: absolute; left: 0; top: 0; transform: translate(-50%, -50%) scale(.5); opacity: 0; color: #fff; font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; white-space: nowrap; transition: opacity .3s, transform .45s var(--ease); }
-.cursor.view span { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-@media (hover: none), (pointer: coarse) { .cursor { display: none; } }
 /* scroll progress */
 .scroll-progress { position: fixed; left: 0; right: 0; top: 0; height: 2px; z-index: 60; background: var(--clay); transform-origin: 0 50%; transform: scaleX(0); pointer-events: none; }
 /* giant footer wordmark */
