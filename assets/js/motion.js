@@ -2,7 +2,7 @@
 // Loaded after the page has rendered. Everything is optional: if the visitor prefers reduced motion,
 // or the libraries fail to load, the site stays exactly as it is without animation.
 // Library files are self-hosted in /assets/vendor (GSAP 3.13 «standard no-charge» licence, Lenis MIT).
-import { t } from '/assets/js/i18n.js';
+import { t, lang } from '/assets/js/i18n.js';
 
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -45,6 +45,13 @@ export async function initMotion() {
   run(parallax);
   run(winter);
   run(steps);
+  run(pageTransitions);
+  run(cursor);
+  run(progress);
+  run(footerMark);
+  run(flyToCart);
+  run(productPage);
+  run(heroMouse);
   run(magnetic);
   run(cartBump);
   // Images change section heights as they load.
@@ -138,7 +145,14 @@ function headings(gsap, ScrollTrigger, SplitText) {
 
 // ---- product cards appear in a wave (also cards added later by filters) ----------
 function cards(gsap, ScrollTrigger) {
-  const show = (els) => gsap.fromTo(els, { autoAlpha: 0, y: 36 }, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: 0.07, overwrite: true });
+  const show = (els) => {
+    gsap.fromTo(els, { autoAlpha: 0, y: 36 }, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: 0.07, overwrite: true });
+    // The photo opens like a curtain and settles from a slight zoom.
+    const media = els.map((c) => c.querySelector('.card-media')).filter(Boolean);
+    gsap.fromTo(media, { clipPath: 'inset(18% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'expo.out', stagger: 0.07, clearProps: 'clipPath' });
+    const imgs = els.map((c) => c.querySelector('.card-link img')).filter(Boolean);
+    gsap.fromTo(imgs, { scale: 1.16 }, { scale: 1, duration: 1.6, ease: 'expo.out', stagger: 0.07, clearProps: 'transform' });
+  };
   const watch = (els) => ScrollTrigger.batch(els, { start: 'top 94%', once: true, onEnter: show });
   watch(document.querySelectorAll('.grid .card'));
   // Catalog filters and related products replace grid contents — animate the new cards too.
@@ -237,6 +251,139 @@ function steps(gsap) {
   if (!list) return;
   gsap.from(list.querySelectorAll('li'), { autoAlpha: 0, y: 40, duration: 1, ease: 'expo.out', stagger: 0.12, scrollTrigger: { trigger: list, start: 'top 85%', once: true } });
   gsap.from(list.querySelectorAll('.step-n'), { yPercent: 60, duration: 1.4, ease: 'expo.out', stagger: 0.12, scrollTrigger: { trigger: list, start: 'top 85%', once: true } });
+}
+
+// ---- page transitions: a dark «ZARDA» curtain covers the page before an internal link opens ----
+// The next page lifts the same curtain with CSS (html.pt-in, set in lang.js before the first paint).
+function pageTransitions(gsap) {
+  const cover = document.createElement('div');
+  cover.className = 'pt-cover';
+  cover.setAttribute('aria-hidden', 'true');
+  cover.innerHTML = '<span>ZARDA</span>';
+  document.body.append(cover);
+  document.addEventListener('click', (e) => {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const a = e.target.closest('a[href]');
+    if (!a || (a.target && a.target !== '_self') || a.hasAttribute('download')) return;
+    const url = new URL(a.href, location.href);
+    if (url.origin !== location.origin || url.pathname.startsWith('/api/') || /\.\w{2,4}$/.test(url.pathname.replace(/\.html$/, ''))) return;
+    if (url.pathname === location.pathname && url.search === location.search) return; // same page / #anchor
+    e.preventDefault();
+    try { sessionStorage.setItem('zarda_pt', '1'); } catch { /* ignore */ }
+    gsap.fromTo(cover, { yPercent: 100 }, { yPercent: 0, duration: 0.5, ease: 'power3.inOut', onComplete: () => { location.href = url.href; } });
+    gsap.fromTo(cover.firstChild, { yPercent: 60, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.5, delay: 0.12, ease: 'power3.out' });
+  });
+  // Back/forward cache restores the page with the curtain down — lift it.
+  window.addEventListener('pageshow', (e) => { if (e.persisted) gsap.set(cover, { yPercent: 100 }); });
+}
+
+// ---- custom cursor (desktop): a small dot; over photos it becomes a «Смотреть» circle ----
+function cursor(gsap) {
+  if (!finePointer) return;
+  const c = document.createElement('div');
+  c.className = 'cursor';
+  c.setAttribute('aria-hidden', 'true');
+  c.innerHTML = `<i></i><span>${lang === 'uz' ? 'Koʻrish' : 'Смотреть'}</span>`;
+  document.body.append(c);
+  const xTo = gsap.quickTo(c, 'x', { duration: 0.35, ease: 'power3' });
+  const yTo = gsap.quickTo(c, 'y', { duration: 0.35, ease: 'power3' });
+  window.addEventListener('pointermove', (e) => { xTo(e.clientX); yTo(e.clientY); c.classList.add('on'); }, { passive: true });
+  document.documentElement.addEventListener('pointerleave', () => c.classList.remove('on'));
+  const VIEW = '.card-media, .w-media, .promo, .cat-img, .split-media, .story-media';
+  const LINK = 'a, button, summary, select, input, textarea, label, [role="radio"]';
+  document.addEventListener('pointerover', (e) => {
+    const inOverlay = e.target.closest('.drawer, .mnav, .qv, .sheet, .viewer');
+    const view = !inOverlay && e.target.closest(VIEW);
+    c.classList.toggle('view', !!view);
+    c.classList.toggle('link', !view && !!e.target.closest(LINK));
+  });
+}
+
+// ---- thin progress line under the header -----------------------------------------
+function progress(gsap) {
+  if (document.documentElement.scrollHeight < window.innerHeight * 1.8) return;
+  const bar = document.createElement('div');
+  bar.className = 'scroll-progress';
+  bar.setAttribute('aria-hidden', 'true');
+  document.body.append(bar);
+  gsap.fromTo(bar, { scaleX: 0 }, { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: 0.3 } });
+}
+
+// ---- giant ZARDA at the bottom of the footer, letters rise as the page ends ---------
+function footerMark(gsap) {
+  const ftr = document.querySelector('.ftr');
+  if (!ftr) return;
+  const mark = document.createElement('div');
+  mark.className = 'ftr-mark';
+  mark.setAttribute('aria-hidden', 'true');
+  mark.innerHTML = 'ZARDA'.split('').map((l) => `<span><b>${l}</b></span>`).join('');
+  ftr.append(mark);
+  gsap.from(mark.querySelectorAll('b'), { yPercent: 105, ease: 'none', stagger: 0.08, scrollTrigger: { trigger: mark, start: 'top bottom', end: 'bottom bottom', scrub: 0.6 } });
+}
+
+// ---- add to cart: the product photo flies to the cart ---------------------------
+function flyToCart(gsap) {
+  let src = null;
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-role="add"], #stickyAdd');
+    if (b) src = { b, at: Date.now() };
+  }, true);
+  document.addEventListener('cart:change', () => {
+    if (!src || Date.now() - src.at > 1500) return;
+    const { b } = src; src = null;
+    const box = b.closest('.qv') || document.querySelector('.pdp');
+    const img = box?.querySelector('.qv-track img, .gallery-track img');
+    const cart = document.getElementById('cartBtn');
+    if (!img || !cart) return;
+    let r = img.getBoundingClientRect();
+    // Photo scrolled away (sticky buy bar): start from the button instead.
+    if (r.bottom < 0 || r.top > window.innerHeight) { const br = b.getBoundingClientRect(); r = { left: br.left + br.width / 2 - 60, top: br.top - 160, width: 120, height: 160 }; }
+    const to = cart.getBoundingClientRect();
+    const fly = document.createElement('img');
+    fly.src = img.currentSrc || img.src; fly.alt = ''; fly.className = 'fly-img';
+    Object.assign(fly.style, { left: `${r.left}px`, top: `${r.top}px`, width: `${r.width}px`, height: `${r.height}px` });
+    document.body.append(fly);
+    const dx = to.left + to.width / 2 - (r.left + r.width / 2);
+    const dy = to.top + to.height / 2 - (r.top + r.height / 2);
+    gsap.timeline({ onComplete: () => fly.remove() })
+      .to(fly, { scale: 0.55, duration: 0.25, ease: 'power2.out' })
+      .to(fly, { x: dx, duration: 0.75, ease: 'power2.inOut' }, 0.15)
+      .to(fly, { y: dy, duration: 0.75, ease: 'back.in(1.4)' }, 0.15)
+      .to(fly, { scale: 48 / Math.max(r.width, 1), borderRadius: '50%', duration: 0.75, ease: 'power2.in' }, 0.15)
+      .to(fly, { autoAlpha: 0, duration: 0.2 }, 0.8);
+  });
+}
+
+// ---- product page: photo opens like a curtain, details rise one by one --------------
+function productPage(gsap) {
+  const pdp = document.querySelector('.pdp');
+  if (!pdp) return;
+  const first = pdp.querySelector('.gallery-track figure');
+  const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+  tl.fromTo(pdp.querySelector('.gallery'), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01 });
+  if (first) {
+    tl.fromTo(first, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.4, clearProps: 'clipPath' }, 0);
+    const img = first.querySelector('img');
+    if (img) tl.fromTo(img, { scale: 1.25 }, { scale: 1, duration: 1.8, clearProps: 'transform' }, 0);
+  }
+  tl.fromTo(pdp.querySelectorAll('.buy > *'), { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 1, stagger: 0.06, clearProps: 'transform' }, 0.25);
+}
+
+// ---- hero photos drift a little with the mouse (desktop) ---------------------------
+function heroMouse(gsap) {
+  if (!finePointer) return;
+  const hero = document.querySelector('.hero');
+  const media = hero?.querySelector('.hero-media');
+  if (!media) return;
+  const xTo = gsap.quickTo(media, 'x', { duration: 1.2, ease: 'power3' });
+  const yTo = gsap.quickTo(media, 'y', { duration: 1.2, ease: 'power3' });
+  gsap.set(media, { scale: 1.04 });
+  hero.addEventListener('pointermove', (e) => {
+    const r = hero.getBoundingClientRect();
+    xTo(((e.clientX - r.left) / r.width - 0.5) * -24);
+    yTo(((e.clientY - r.top) / r.height - 0.5) * -16);
+  });
+  hero.addEventListener('pointerleave', () => { xTo(0); yTo(0); });
 }
 
 // ---- magnetic buttons on desktop (React Bits «magnet» idea) ----------------------
